@@ -502,6 +502,24 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 - Animation: pulse (opacity 0.4 → 0.8), 1.5s ease-in-out infinite
 - Card container: background `var(--color-surface)` + border `var(--color-border)`
 
+### Spinner
+- 작업을 처리하는 중임을 나타낸다. 버튼 제출, 데이터 조회, 영역 로딩에 쓴다.
+- Markup: `<span class="spinner" role="status" aria-label="로딩 중">`
+- Size: sm 16px (버튼 안), md 24px (기본), lg 40px (영역 로딩)
+- Ring: border 두께 size / 8, color `var(--color-border)`, 위쪽 호 `var(--color-primary)`
+- Animation: rotate 0.8s linear infinite
+- 버튼 안: sm 크기, 색은 `currentColor`(트랙 25%)로 버튼 글자색을 따른다. 버튼에 `aria-busy="true"`를 주고 스피너는 `aria-hidden="true"`로 둔다
+
+### Typing Indicator
+- 상대(사람, AI)가 응답을 작성하는 중임을 나타낸다. 채팅, AI 응답 대기 같은 대화형 UI에서만 쓰고, 일반 로딩에는 Spinner를 쓴다.
+- Markup: `<div class="typing-indicator" role="status" aria-label="응답 작성 중">` + `<span>` 3개
+- Container: background `var(--color-surface)`, border `var(--color-border)`, radius `var(--radius-xl)`, padding 14px 18px
+- Dot: 7px, gap 6px, `var(--color-primary)`
+- Animation: scale 0.7 → 1, opacity 0.3 → 1, 1.2s ease-in-out infinite, 점마다 0.15s 지연
+
+### Reduced Motion
+- `prefers-reduced-motion: reduce`에서도 Spinner와 Typing Indicator는 멈추지 않고 느리게만 돌린다 (Spinner 2.4s, Typing Indicator 3s). 멈추면 진행 중이라는 사실이 전달되지 않는다.
+
 ### Empty State
 - Container: border 1px dashed `var(--color-border)`, radius `var(--radius-xl)`, padding 64px 32px
 - Text-align: center
