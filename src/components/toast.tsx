@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { Check, Info, TriangleAlert, X, type LucideIcon } from "lucide-react";
 
 export type ToastTone = "info" | "success" | "warning" | "error";
@@ -40,6 +40,29 @@ export function useToast() {
   );
 
   return { toast, showToast };
+}
+
+type ShowToast = (message: string, tone?: ToastTone) => void;
+
+const ShowToastContext = createContext<ShowToast>(() => {
+  console.error("useShowToast를 ToastProvider 밖에서 호출했습니다. 루트 레이아웃을 ToastProvider로 감싸 주세요.");
+});
+
+// 토스트를 앱에 하나만 둔다. 컴포넌트마다 useToast를 쓰면 status 영역이 여러 개 생기고,
+// transform·perspective가 걸린 요소 안에서는 fixed 위치가 그 요소 기준으로 잡혀 토스트가 갇힌다
+export function ToastProvider({ children }: { children: ReactNode }) {
+  const { toast, showToast } = useToast();
+
+  return (
+    <ShowToastContext value={showToast}>
+      {children}
+      {toast}
+    </ShowToastContext>
+  );
+}
+
+export function useShowToast() {
+  return useContext(ShowToastContext);
 }
 
 export function ToastMessage({ tone, children }: { tone: ToastTone; children: string }) {

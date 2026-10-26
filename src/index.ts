@@ -25,4 +25,4 @@ export { Stepper } from "./components/stepper.js";
 export { Switch } from "./components/switch.js";
 export { Tabs, type TabItem } from "./components/tabs.js";
 export { Tag, type TagVariant } from "./components/tag.js";
-export { ToastMessage, useToast, type ToastTone } from "./components/toast.js";
+export { ToastMessage, ToastProvider, useShowToast, useToast, type ToastTone } from "./components/toast.js";

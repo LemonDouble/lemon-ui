@@ -36,6 +36,19 @@ import { Button, Callout } from "@lemondouble/ui";
 <Button>저장</Button>
 ```
 
+## 토스트
+
+루트 레이아웃을 `ToastProvider`로 한 번 감싸고, 컴포넌트에서는 `useShowToast()`로 띄웁니다.
+
+```tsx
+// app/layout.tsx
+<ToastProvider>{children}</ToastProvider>
+
+// 컴포넌트
+const showToast = useShowToast();
+showToast("삭제에 실패했습니다.", "error");
+```
+
 ## 입력 요소의 배경
 
 입력 요소는 `--field-bg` 변수를 배경으로 씁니다. 페이지 위에서는 `surface`이고, `Card`, `Dialog`, `RowList` 안에서는 자동으로 `bg`가 되어 입력칸이 묻히지 않습니다. 직접 만든 surface 컨테이너에서는 `[--field-bg:var(--color-bg)]` 클래스를 붙입니다.

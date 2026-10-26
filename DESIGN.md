@@ -203,7 +203,7 @@ React 프로젝트는 아래 컴포넌트를 `@lemondouble/ui`에서 가져다 �
 | Dropdown Menu | `DropdownMenu`, `MenuItem`, `MenuSeparator`, `CopyMenuItem` |
 | Modal / Dialog | `Modal`, `Dialog` |
 | Confirm Dialog | `ConfirmDialog` |
-| Toast | `useToast`, `ToastMessage` |
+| Toast | `ToastProvider`, `useShowToast`, `ToastMessage` |
 | Skeleton Loading | `Skeleton` |
 | Spinner | `Spinner`, `ButtonSpinner` |
 | Empty State | `EmptyState` |
@@ -501,6 +501,7 @@ React 프로젝트는 아래 컴포넌트를 `@lemondouble/ui`에서 가져다 �
 - Position: 화면 하단 가운데, bottom 24px, 좌우 여백 16px, z-index `var(--z-toast)`
 - Duration: 2.5초 뒤 사라진다. 새 메시지가 오면 앞의 메시지를 바로 바꾼다.
 - 스크린 리더: `role="status"` 영역을 미리 두고 그 안에 메시지를 넣는다. 영역을 메시지와 함께 새로 만들면 읽히지 않는다.
+- 앱에 하나만 둔다. 컴포넌트마다 두면 status 영역이 여러 개 생기고, transform이 걸린 요소 안에서는 fixed 위치가 그 요소 기준으로 잡혀 토스트가 갇힌다. React 프로젝트는 루트 레이아웃을 `ToastProvider`로 감싸고 `useShowToast()`로 띄운다.
 
 ### Tooltip
 - Background: `var(--color-fg)`, color `var(--color-bg)`
@@ -673,6 +674,7 @@ React 프로젝트는 아래 컴포넌트를 `@lemondouble/ui`에서 가져다 �
 - Shadow를 깊이 표현에 사용하지 않는다 — border와 배경색 차이로 표현한다
 - 라이트 모드를 만들지 않는다 — 이 시스템은 다크 모드 전용이다
 - 텍스트에 Pretendard 800-900 weight를 사용하지 않는다 — 최대 700
+- 브라우저 기본 `alert()`/`confirm()`을 쓰지 않는다. 디자인과 맞지 않고 화면 전체를 멈추게 한다. 삭제 확인은 Confirm Dialog, 입력값 문제는 입력칸 아래 FieldError, 동작 실패는 Error 토스트로 알린다
 
 ## 9. Responsive Behavior
 

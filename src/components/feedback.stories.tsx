@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { Button } from "./button";
 import { ButtonSpinner, Spinner } from "./spinner";
-import { ToastMessage, useToast } from "./toast";
+import { ToastMessage, ToastProvider, useShowToast } from "./toast";
 
 const meta = {
   title: "Feedback/Toast",
@@ -11,7 +11,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "useToast()가 돌려주는 toast 요소를 화면에 한 번 렌더링하고 showToast(메시지, 상태)로 띄웁니다. 화면 하단 가운데에 2.5초 동안 나타납니다.",
+          "루트 레이아웃을 ToastProvider로 한 번 감싸고, 어느 컴포넌트에서든 useShowToast()로 받은 함수에 (메시지, 상태)를 넘겨 띄웁니다. 화면 하단 가운데에 2.5초 동안 나타납니다.",
       },
     },
   },
@@ -33,8 +33,15 @@ export const Tones: Story = {
 
 export const Live: Story = {
   name: "띄워 보기",
+  decorators: [
+    (Story) => (
+      <ToastProvider>
+        <Story />
+      </ToastProvider>
+    ),
+  ],
   render: function Render() {
-    const { toast, showToast } = useToast();
+    const showToast = useShowToast();
     return (
       <div className="flex flex-wrap gap-2">
         <Button variant="ghost" onClick={() => showToast("링크를 복사했습니다.", "success")}>
@@ -46,7 +53,6 @@ export const Live: Story = {
         <Button variant="ghost" onClick={() => showToast("업로드에 실패했습니다.", "error")}>
           Error
         </Button>
-        {toast}
       </div>
     );
   },
