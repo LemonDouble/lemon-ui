@@ -76,7 +76,13 @@ export function Stepper({
             aria-label={label}
             value={shownText}
             placeholder={emptyLabel}
-            onChange={(e) => setTyped(e.target.value.replace(/\D/g, ""))}
+            onChange={(e) => {
+              const digits = e.target.value.replace(/\D/g, "");
+              setTyped(digits);
+              // 범위 안의 값은 바로 반영해서, 입력칸을 벗어나기 전에도 폼이 값을 알 수 있게 한다. 범위 밖 값의 보정은 blur 때 한다
+              const typedNumber = Number(digits);
+              if (digits !== "" && typedNumber >= min && (max === undefined || typedNumber <= max)) onChange(typedNumber);
+            }}
             onBlur={finishTyping}
             onKeyDown={(e) => {
               if (e.key === "Enter") {

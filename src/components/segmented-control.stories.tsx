@@ -49,3 +49,18 @@ export const Small: Story = {
     return <SegmentedControl {...args} value={value} onChange={setValue} />;
   },
 };
+
+export const Disabled: Story = {
+  args: {
+    options: presets,
+    value: "normal",
+    disabled: true,
+    onChange: () => {},
+    "aria-label": "공유 방식",
+  },
+  render: (args) => (
+    <div className="max-w-md">
+      <SegmentedControl {...args} />
+    </div>
+  ),
+};

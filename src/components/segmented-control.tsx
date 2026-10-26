@@ -8,6 +8,7 @@ export function SegmentedControl<Value extends string>({
   value,
   onChange,
   size = "md",
+  disabled = false,
   className = "",
   ...labelProps
 }: {
@@ -15,6 +16,7 @@ export function SegmentedControl<Value extends string>({
   value: Value | null;
   onChange: (value: Value) => void;
   size?: "md" | "sm";
+  disabled?: boolean;
   className?: string;
 } & ({ "aria-label": string } | { "aria-labelledby": string })) {
   const containerClassName =
@@ -27,7 +29,8 @@ export function SegmentedControl<Value extends string>({
   return (
     <div
       role="radiogroup"
-      className={`rounded-lg border border-border bg-(--field-bg) ${containerClassName} ${className}`}
+      aria-disabled={disabled || undefined}
+      className={`rounded-lg border border-border bg-(--field-bg) ${disabled ? "opacity-40" : ""} ${containerClassName} ${className}`}
       {...labelProps}
     >
       {options.map((option) => {
@@ -38,8 +41,9 @@ export function SegmentedControl<Value extends string>({
             type="button"
             role="radio"
             aria-checked={selected}
+            disabled={disabled}
             onClick={() => onChange(option.value)}
-            className={`font-semibold whitespace-nowrap transition-colors ${itemClassName} ${
+            className={`font-semibold whitespace-nowrap transition-colors disabled:cursor-not-allowed ${itemClassName} ${
               selected ? "bg-primary-dim text-primary" : "text-fg-secondary hover:text-fg"
             }`}
           >

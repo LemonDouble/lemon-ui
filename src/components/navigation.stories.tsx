@@ -74,6 +74,7 @@ export const TabsStory: Story = {
           { value: "all", label: "전체" },
           { value: "anime", label: "애니메이션" },
           { value: "game", label: "게임" },
+          { value: "drama", label: "드라마 (준비 중)", disabled: true },
         ]}
       />
     );
