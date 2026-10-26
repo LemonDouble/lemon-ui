@@ -18,8 +18,8 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 ### Brand Images
 이 레포지토리의 `images/` 폴더에 있는 원본을 항상 사용한다. 프로젝트에는 아래 GitHub Pages URL에서 받아 복사해 넣는다.
 
-- 다운로드 URL: `https://lemondouble.github.io/lemon-design-system/` + 파일 경로
-  - 예: `https://lemondouble.github.io/lemon-design-system/images/lemon-logo.webp`
+- 다운로드 URL: `https://lemondouble.github.io/lemon-ui/` + 파일 경로
+  - 예: `https://lemondouble.github.io/lemon-ui/images/lemon-logo.webp`
 
 | 파일 | 용도 | 사용처 |
 |------|------|--------|
@@ -62,113 +62,32 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 
 ## 2. Design Tokens
 
-모든 값은 아래 두 블록(Theme, Layer)에서 정의한다. 토큰 이름은 [Tailwind CSS v4의 테마 변수 규칙](https://tailwindcss.com/docs/theme)(`--color-*`, `--font-*`, `--radius-*`)을 따르므로, Tailwind 프로젝트와 일반 CSS 프로젝트가 같은 이름을 쓴다.
+모든 토큰은 [`src/theme.css`](https://github.com/LemonDouble/lemon-ui/blob/main/src/theme.css) 한 곳에서 정의한다. 토큰 이름은 [Tailwind CSS v4의 테마 변수 규칙](https://tailwindcss.com/docs/theme)(`--color-*`, `--font-*`, `--radius-*`)을 따르므로, Tailwind 프로젝트와 일반 CSS 프로젝트가 같은 이름을 쓴다.
 
-- 토큰에 있는 값을 hex나 rgba로 직접 쓰지 않는다. 값을 바꿀 때 이 블록 한 곳만 고치면 되도록 하기 위함이다.
+- 토큰에 있는 값을 hex나 rgba로 직접 쓰지 않는다. 값을 바꿀 때 `theme.css` 한 곳만 고치면 되도록 하기 위함이다.
 - 토큰에 없는 일회성 값(예: Code Block 헤더 배경)은 해당 컴포넌트 스펙에 적힌 값을 그대로 쓴다.
 - 토큰 이름을 프로젝트마다 바꾸지 않는다(`--color-bg`를 `--color-page`로 바꾸는 등).
+- `theme.css`에는 토큰 외에 z-index 변수(`--z-*`), 입력 요소 배경 변수(`--field-bg`), 기본 스타일(배경, 글자색, `word-break: keep-all`, 포커스 링)도 들어 있다.
 
 ### 적용 방법
-- **Tailwind CSS v4**: Theme 블록은 `@theme { }` 안에, Layer 블록은 `:root { }` 안에 넣는다. `bg-surface`, `text-fg-muted`, `border-border`, `rounded-xl`, `font-heading` 같은 유틸리티 클래스가 생성된다.
-- **일반 CSS**: 두 블록을 모두 `:root { }` 안에 넣는다.
-- 두 경우 모두 CSS에서 `var(--color-primary)`처럼 참조할 수 있다. Tailwind v4는 `@theme` 변수를 `:root`에도 내보낸다.
-- radius 토큰은 Tailwind 기본값과 이름·값이 같으므로, Tailwind 프로젝트에서는 생략해도 된다.
+- **React + Tailwind CSS v4 (Next.js)**: [`@lemondouble/ui`](https://www.npmjs.com/package/@lemondouble/ui) 패키지를 설치하고 전역 CSS에서 `theme.css`를 import한다. 컴포넌트는 직접 만들지 않고 패키지에서 가져다 쓴다. 생김새와 사용법은 [Storybook](https://lemondouble.github.io/lemon-ui/)에서 확인한다.
+- **그 외 Tailwind CSS v4 프로젝트**: `theme.css`의 `@theme` 블록과 `:root` 블록을 전역 CSS에 복사한다.
+- **일반 CSS 프로젝트**: `theme.css`의 `@theme` 블록 내용과 `:root` 블록 내용을 모두 `:root { }` 안에 복사한다. `@source`와 `@keyframes`는 Tailwind 전용이므로 옮기지 않는다.
+- 어느 경우든 CSS에서 `var(--color-primary)`처럼 참조할 수 있다. Tailwind v4는 `@theme` 변수를 `:root`에도 내보낸다.
 - 폰트 CDN의 `@import`는 `@import "tailwindcss"`보다 위에 둔다.
 
 ```css
-/* Tailwind CSS v4 전역 CSS 예시 */
+/* Next.js 전역 CSS 예시 */
 @import url("https://cdn.jsdelivr.net/npm/galmuri@2.40.3/dist/galmuri.css");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/static/pretendard.min.css");
 @import url("https://cdn.jsdelivr.net/npm/@fontsource-variable/jetbrains-mono@5.2.8/index.css");
 @import "tailwindcss";
-
-@theme { /* Theme 블록 */ }
-:root { /* Layer 블록 */ }
-```
-
-### Theme 블록
-
-```css
-@theme {
-  /* Brand */
-  --color-primary: #F0B90B;
-  --color-primary-hover: #D4A30A;
-  --color-primary-dim: rgba(240, 185, 11, 0.12);
-  --color-primary-dim-border: rgba(240, 185, 11, 0.25);
-  --color-secondary: #CD6B5E;
-  --color-secondary-dim: rgba(205, 107, 94, 0.12);
-  --color-secondary-dim-border: rgba(205, 107, 94, 0.25);
-
-  /* Background & Surface */
-  --color-bg: #12100E;
-  --color-bg-glass: rgba(18, 16, 14, 0.85);
-  --color-surface: #1C1816;
-  --color-surface-hover: #231E1B;
-  --color-overlay: rgba(0, 0, 0, 0.6);
-
-  /* Border */
-  --color-border: #2E2723;
-  --color-border-hover: #3D3530;
-
-  /* Text */
-  --color-fg: #F5F0EB;
-  --color-fg-secondary: #A89E95;
-  --color-fg-muted: #8D7E72;
-
-  /* Focus */
-  --color-focus-ring: var(--color-fg-muted);
-
-  /* Semantic */
-  --color-info: #60A5FA;
-  --color-info-subtle: rgba(96, 165, 250, 0.06);
-  --color-info-dim: rgba(96, 165, 250, 0.12);
-  --color-info-dim-border: rgba(96, 165, 250, 0.25);
-  --color-success: #4ADE80;
-  --color-success-subtle: rgba(74, 222, 128, 0.06);
-  --color-success-dim: rgba(74, 222, 128, 0.12);
-  --color-success-dim-border: rgba(74, 222, 128, 0.25);
-  --color-warning: #F59E0B;
-  --color-warning-subtle: rgba(245, 158, 11, 0.06);
-  --color-warning-dim: rgba(245, 158, 11, 0.12);
-  --color-warning-dim-border: rgba(245, 158, 11, 0.25);
-  --color-error: #EF4444;
-  --color-error-hover: #F87171;
-  --color-error-subtle: rgba(239, 68, 68, 0.06);
-  --color-error-dim: rgba(239, 68, 68, 0.12);
-  --color-error-dim-border: rgba(239, 68, 68, 0.25);
-
-  /* Font */
-  --font-heading: 'Galmuri11', monospace;
-  --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono Variable', 'Pretendard', monospace;
-
-  /* Radius */
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
-  --radius-full: 9999px;
-}
-```
-
-### Layer 블록
-
-```css
-:root {
-  /* Z-index */
-  --z-base: 0;
-  --z-dropdown: 100;
-  --z-sticky: 200;
-  --z-overlay: 300;
-  --z-modal: 400;
-  --z-toast: 500;
-  --z-tooltip: 600;
-}
+@import "@lemondouble/ui/theme.css";
 ```
 
 ## 3. Color Palette & Roles
 
-각 색상의 의미와 사용처를 설명한다. 값은 [Design Tokens](#2-design-tokens)의 토큰 블록을 따른다.
+각 색상의 의미와 사용처를 설명한다. 값은 [Design Tokens](#2-design-tokens)의 `theme.css`를 따른다.
 
 ### Brand (로고에서 추출)
 - **Lemon Yellow** `--color-primary`: CTA 버튼, 링크, 강조 텍스트, 활성 상태, 섹션 제목 색상. 호버는 `--color-primary-hover`.
@@ -264,6 +183,33 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 
 ## 5. Component Stylings
 
+React 프로젝트는 아래 컴포넌트를 `@lemondouble/ui`에서 가져다 쓴다. 이 절은 그 컴포넌트가 따르는 규칙과 이유를 적은 것이며, 패키지에 없는 컴포넌트(Code Block, Table, Accordion 등)를 직접 만들 때도 이 규칙을 따른다.
+
+| 스펙 | 패키지 컴포넌트 |
+|------|-----------------|
+| Buttons | `Button`, `LinkButton`, `TextLink`, `IconButton`, `buttonClassName()` |
+| Cards | `Card` |
+| Tags / Badges | `Tag` |
+| Inputs, Select, Textarea | `Input`, `Select`, `Textarea`, `Label`, `HelpText`, `FieldError` |
+| Segmented Control | `SegmentedControl` |
+| Stepper | `Stepper` |
+| Copy Field | `CopyField`(강조형), `CopyInline`(인라인형) |
+| Callout / Alert | `Callout` |
+| Navigation | `AppNav`, `NavLink`, `NavButton` |
+| Row List | `RowList`, `Row`, `RowIcon` |
+| Toggle | `Switch` |
+| Progress Bar | `Progress` |
+| Tabs | `Tabs` |
+| Dropdown Menu | `DropdownMenu`, `MenuItem`, `MenuSeparator`, `CopyMenuItem` |
+| Modal / Dialog | `Modal`, `Dialog` |
+| Confirm Dialog | `ConfirmDialog` |
+| Toast | `useToast`, `ToastMessage` |
+| Skeleton Loading | `Skeleton` |
+| Spinner | `Spinner`, `ButtonSpinner` |
+| Empty State | `EmptyState` |
+| File Drop Zone | `FileDropZone`(폼 칸형), `FileDropPanel`(페이지형) |
+| Icon Badge, Notice Page | `IconBadge`, `NoticePage`, `NoticeLinks` |
+
 ### Buttons
 
 **Primary**
@@ -327,6 +273,8 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 - Primary variant: text `var(--color-primary)`, background `var(--color-primary-dim)`
 - Secondary variant: text `var(--color-secondary)`, background `var(--color-secondary-dim)`
 - Success variant: text `var(--color-success)`, background `var(--color-success-dim)`
+- Warning variant: text `var(--color-warning)`, background `var(--color-warning-dim)`. 진행 중, 횟수 소진처럼 주의가 필요한 상태
+- Error variant: text `var(--color-error)`, background `var(--color-error-dim)`. 만료, 잠김처럼 더 쓸 수 없는 상태
 
 ### Inputs
 - Background: `var(--color-surface)`
@@ -752,7 +700,8 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 ## 10. Agent Prompt Guide
 
 ### Token Setup
-- 작업을 시작할 때 [Design Tokens](#2-design-tokens)의 Theme·Layer 블록을 [적용 방법](#적용-방법)대로 프로젝트 전역 CSS에 그대로 복사한다.
+- 작업을 시작할 때 [적용 방법](#적용-방법)대로 토큰을 연결한다. Next.js 프로젝트는 `@lemondouble/ui`를 설치하고 `theme.css`를 import한다.
+- 패키지에 있는 컴포넌트는 새로 만들지 않는다. 필요한 변형이 없으면 패키지에 추가하고 Storybook에 스토리를 함께 작성한다.
 - 자주 쓰는 토큰: 배경 `--color-bg`, 카드 `--color-surface`, 테두리 `--color-border`, 제목 `--color-fg`, 본문 `--color-fg-secondary`, CTA `--color-primary`, 보조 강조 `--color-secondary`
 - Tailwind 프로젝트에서는 같은 토큰을 유틸리티로 쓴다: `bg-bg`, `bg-surface`, `border-border`, `text-fg`, `text-fg-secondary`, `bg-primary`, `text-secondary`
 

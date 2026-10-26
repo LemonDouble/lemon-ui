@@ -1,0 +1,111 @@
+/*
+ * @lemondouble/ui 토큰과 기본 스타일
+ * 사용하는 프로젝트의 전역 CSS에서 `@import "tailwindcss";` 바로 아래에 import한다.
+ */
+
+/* 패키지 컴포넌트의 클래스가 사용하는 프로젝트의 CSS에 생성되도록, 이 파일이 있는 dist 폴더를 스캔 대상에 넣는다 */
+@source "./";
+
+@theme {
+  /* Brand */
+  --color-primary: #F0B90B;
+  --color-primary-hover: #D4A30A;
+  --color-primary-dim: rgba(240, 185, 11, 0.12);
+  --color-primary-dim-border: rgba(240, 185, 11, 0.25);
+  --color-secondary: #CD6B5E;
+  --color-secondary-dim: rgba(205, 107, 94, 0.12);
+  --color-secondary-dim-border: rgba(205, 107, 94, 0.25);
+
+  /* Background & Surface */
+  --color-bg: #12100E;
+  --color-bg-glass: rgba(18, 16, 14, 0.85);
+  --color-surface: #1C1816;
+  --color-surface-hover: #231E1B;
+  --color-overlay: rgba(0, 0, 0, 0.6);
+
+  /* Border */
+  --color-border: #2E2723;
+  --color-border-hover: #3D3530;
+
+  /* Text */
+  --color-fg: #F5F0EB;
+  --color-fg-secondary: #A89E95;
+  --color-fg-muted: #8D7E72;
+
+  /* Focus */
+  --color-focus-ring: var(--color-fg-muted);
+
+  /* Semantic */
+  --color-info: #60A5FA;
+  --color-info-subtle: rgba(96, 165, 250, 0.06);
+  --color-info-dim: rgba(96, 165, 250, 0.12);
+  --color-info-dim-border: rgba(96, 165, 250, 0.25);
+  --color-success: #4ADE80;
+  --color-success-subtle: rgba(74, 222, 128, 0.06);
+  --color-success-dim: rgba(74, 222, 128, 0.12);
+  --color-success-dim-border: rgba(74, 222, 128, 0.25);
+  --color-warning: #F59E0B;
+  --color-warning-subtle: rgba(245, 158, 11, 0.06);
+  --color-warning-dim: rgba(245, 158, 11, 0.12);
+  --color-warning-dim-border: rgba(245, 158, 11, 0.25);
+  --color-error: #EF4444;
+  --color-error-hover: #F87171;
+  --color-error-subtle: rgba(239, 68, 68, 0.06);
+  --color-error-dim: rgba(239, 68, 68, 0.12);
+  --color-error-dim-border: rgba(239, 68, 68, 0.25);
+
+  /* Font */
+  --font-heading: 'Galmuri11', monospace;
+  --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'Pretendard', monospace;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+
+  /* Animation */
+  --animate-skeleton: skeleton 1.5s ease-in-out infinite;
+
+  @keyframes skeleton {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+  }
+}
+
+:root {
+  /* Z-index */
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-tooltip: 600;
+
+  /* 입력 요소 배경. surface 위의 컨테이너(Card, Dialog 등)가 bg로 바꾼다 */
+  --field-bg: var(--color-surface);
+}
+
+/* 유틸리티(focus:outline-none 등)가 덮어쓸 수 있도록 base 레이어에 둔다 */
+@layer base {
+  html,
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+  }
+
+  ::placeholder {
+    color: var(--color-fg-muted);
+  }
+}
