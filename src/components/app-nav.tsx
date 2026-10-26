@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { createContext, useContext, useState, type ComponentProps, type ReactNode } from "react";
+import { Children, createContext, useContext, useState, type ComponentProps, type ReactNode } from "react";
 import { Menu, X } from "lucide-react";
 import { LinkButton } from "./button.js";
 
@@ -64,6 +64,7 @@ export function AppNav({
   logoSrc,
   name,
   homeHref = "/",
+  reloadOnHome = false,
   cta,
   actions,
   mobileActions,
@@ -74,6 +75,7 @@ export function AppNav({
   logoSrc: string;
   name: string;
   homeHref?: string;
+  reloadOnHome?: boolean;
   cta?: { href: string; label: string; active?: boolean };
   actions?: ReactNode;
   mobileActions?: ReactNode;
@@ -83,14 +85,29 @@ export function AppNav({
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const closeMenu = () => setMenuOpen(false);
+  const hasLinks = Children.toArray(children).length > 0 || cta !== undefined;
+  // 메뉴에 넣을 항목이 없으면 햄버거 버튼과 모바일 메뉴를 그리지 않는다
+  const hasMobileMenu = hasLinks || mobileFooter !== undefined;
+  const brand = (
+    <>
+      <img src={logoSrc} alt="" width={32} height={32} className="size-8 rounded-lg" />
+      <span className="font-heading text-base leading-none font-bold text-primary">{name}</span>
+    </>
+  );
 
   return (
     <header className="sticky top-0 z-(--z-sticky) h-14 border-b border-border bg-bg-glass backdrop-blur-md">
       <div className={`mx-auto flex h-full items-center justify-between gap-6 px-5 sm:px-8 ${maxWidthClassName}`}>
-        <Link href={homeHref} className="flex shrink-0 items-center gap-2.5">
-          <img src={logoSrc} alt="" width={32} height={32} className="size-8 rounded-lg" />
-          <span className="font-heading text-base leading-none font-bold text-primary">{name}</span>
-        </Link>
+        {/* 한 화면짜리 앱은 로고를 눌러 작업 중이던 상태를 처음으로 되돌리므로, 페이지를 새로 불러오는 링크를 쓴다 */}
+        {reloadOnHome ? (
+          <a href={homeHref} className="flex shrink-0 items-center gap-2.5">
+            {brand}
+          </a>
+        ) : (
+          <Link href={homeHref} className="flex shrink-0 items-center gap-2.5">
+            {brand}
+          </Link>
+        )}
 
         <NavContext.Provider value={{ placement: "desktop", closeMenu }}>
           <nav className="hidden items-center gap-1 sm:flex">
@@ -102,7 +119,7 @@ export function AppNav({
             )}
             {actions && (
               <>
-                <span aria-hidden="true" className="mx-3 h-5 w-px bg-border" />
+                {hasLinks && <span aria-hidden="true" className="mx-3 h-5 w-px bg-border" />}
                 {actions}
               </>
             )}
@@ -111,34 +128,38 @@ export function AppNav({
 
         <div className="-mr-2 flex items-center sm:hidden">
           {mobileActions}
-          <button
-            type="button"
-            onClick={() => setMenuOpen((open) => !open)}
-            aria-expanded={menuOpen}
-            aria-controls="app-nav-mobile-menu"
-            aria-label={menuOpen ? "메뉴 닫기" : "메뉴 열기"}
-            className="inline-flex size-10 items-center justify-center rounded-lg text-fg-secondary transition-colors hover:text-fg"
-          >
-            {menuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {hasMobileMenu && (
+            <button
+              type="button"
+              onClick={() => setMenuOpen((open) => !open)}
+              aria-expanded={menuOpen}
+              aria-controls="app-nav-mobile-menu"
+              aria-label={menuOpen ? "메뉴 닫기" : "메뉴 열기"}
+              className="inline-flex size-10 items-center justify-center rounded-lg text-fg-secondary transition-colors hover:text-fg"
+            >
+              {menuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          )}
         </div>
       </div>
 
       {/* 메뉴 항목이 연 모달이 함께 사라지지 않도록, 닫을 때 언마운트하지 않고 숨기기만 한다 */}
-      <NavContext.Provider value={{ placement: "mobile", closeMenu }}>
-        <nav
-          id="app-nav-mobile-menu"
-          className={`${menuOpen ? "flex" : "hidden"} absolute inset-x-0 top-full flex-col gap-1 border-b border-border bg-bg px-5 py-3 sm:hidden`}
-        >
-          {cta && (
-            <NavLink href={cta.href} active={cta.active}>
-              {cta.label}
-            </NavLink>
-          )}
-          {children}
-          {mobileFooter}
-        </nav>
-      </NavContext.Provider>
+      {hasMobileMenu && (
+        <NavContext.Provider value={{ placement: "mobile", closeMenu }}>
+          <nav
+            id="app-nav-mobile-menu"
+            className={`${menuOpen ? "flex" : "hidden"} absolute inset-x-0 top-full flex-col gap-1 border-b border-border bg-bg px-5 py-3 sm:hidden`}
+          >
+            {cta && (
+              <NavLink href={cta.href} active={cta.active}>
+                {cta.label}
+              </NavLink>
+            )}
+            {children}
+            {mobileFooter}
+          </nav>
+        </NavContext.Provider>
+      )}
     </header>
   );
 }

@@ -360,6 +360,7 @@ React 프로젝트는 아래 컴포넌트를 `@lemondouble/ui`에서 가져다 �
   - 알림처럼 자주 쓰는 아이콘 동작은 메뉴에 넣지 않고 상단 바의 햄버거 버튼 왼쪽에 남긴다.
   - CTA는 버튼 모양을 버리고 메뉴 맨 위의 일반 항목으로 둔다. 메뉴 항목은 모두 같은 모양(min-height 40px, padding 0 14px, radius `var(--radius-md)`)이다.
   - 로그아웃처럼 아이콘만으로는 뜻이 약한 동작은 메뉴 맨 아래 텍스트 항목으로 둔다.
+  - 링크가 없는 한 화면짜리 앱은 햄버거 버튼과 메뉴를 두지 않고, 아이콘 동작을 상단 바에 그대로 둔다. 링크가 없으면 데스크톱의 세로 구분선도 두지 않는다.
 
 ### Table
 - Container: border 1px solid `var(--color-border)`, radius `var(--radius-xl)`, overflow hidden
