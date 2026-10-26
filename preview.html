@@ -56,6 +56,7 @@
     --color-warning-dim: rgba(245, 158, 11, 0.12);
     --color-warning-dim-border: rgba(245, 158, 11, 0.25);
     --color-error: #EF4444;
+    --color-error-hover: #F87171;
     --color-error-subtle: rgba(239, 68, 68, 0.06);
     --color-error-dim: rgba(239, 68, 68, 0.12);
     --color-error-dim-border: rgba(239, 68, 68, 0.25);
@@ -95,6 +96,8 @@
     color: var(--color-fg);
     font-family: var(--font-sans);
     line-height: 1.6;
+    word-break: keep-all;
+    overflow-wrap: break-word;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -226,6 +229,29 @@
     border: 1px solid var(--color-border);
   }
   .btn-ghost:hover { border-color: var(--color-border-hover); color: var(--color-fg); }
+
+  .btn-danger {
+    background: var(--color-error);
+    color: var(--color-bg);
+  }
+  .btn-danger:hover { background: var(--color-error-hover); }
+
+  .btn-icon {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-lg);
+    color: var(--color-fg-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-icon:hover { color: var(--color-primary); background: var(--color-primary-dim); }
+  .btn-icon.destructive:hover { color: var(--color-error); background: var(--color-error-dim); }
 
   .btn-sm {
     font-size: 13px;
@@ -540,7 +566,18 @@
     color: var(--color-fg);
   }
 
-  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout-info { background: var(--color-info-subtle); border: 1px solid var(--color-info-dim-border); color: var(--color-fg); }
+  .callout-success { background: var(--color-success-subtle); border: 1px solid var(--color-success-dim-border); color: var(--color-fg); }
+  .callout-warning { background: var(--color-warning-subtle); border: 1px solid var(--color-warning-dim-border); color: var(--color-fg); }
+  .callout-error { background: var(--color-error-subtle); border: 1px solid var(--color-error-dim-border); color: var(--color-fg); }
+
+  .callout-icon { display: flex; flex-shrink: 0; margin-top: 1px; }
+  .callout-primary .callout-icon { color: var(--color-primary); }
+  .callout-secondary .callout-icon { color: var(--color-secondary); }
+  .callout-info .callout-icon { color: var(--color-info); }
+  .callout-success .callout-icon { color: var(--color-success); }
+  .callout-warning .callout-icon { color: var(--color-warning); }
+  .callout-error .callout-icon { color: var(--color-error); }
 
   /* ===== INPUT ===== */
   .input-group {
@@ -801,6 +838,43 @@
     padding: 16px 24px;
     border-top: 1px solid var(--color-border);
   }
+
+  .confirm-dialog { max-width: 460px; padding: 24px; }
+  .confirm-dialog-main { display: flex; gap: 16px; }
+  .confirm-dialog-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-lg);
+    background: var(--color-error-dim);
+    border: 1px solid var(--color-error-dim-border);
+    color: var(--color-error);
+  }
+  .confirm-dialog-text { min-width: 0; flex: 1; }
+  .confirm-dialog-text h3 { font-size: 17px; font-weight: 700; }
+  .confirm-dialog-text p {
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--color-fg-secondary);
+  }
+  .confirm-dialog-target {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+  .confirm-dialog-target svg { flex-shrink: 0; color: var(--color-fg-muted); }
+  .confirm-dialog-target-name { font-size: 14px; font-weight: 600; color: var(--color-fg); word-break: break-all; }
+  .confirm-dialog-target-meta { margin-top: 2px; font-size: 12px; color: var(--color-fg-muted); }
+  .confirm-dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 24px; }
 
   /* ===== DROPDOWN / SELECT ===== */
   .select-wrapper {
@@ -1214,6 +1288,30 @@
     .typing-indicator span { animation-duration: 3s; }
   }
 
+  .icon-badge {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    border-radius: var(--radius-xl);
+    background: var(--color-primary-dim);
+    border: 1px solid var(--color-primary-dim-border);
+    color: var(--color-primary);
+  }
+  .status-page { padding: 48px 32px; text-align: center; }
+  .status-page-code {
+    margin-bottom: 12px;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    color: var(--color-primary);
+  }
+  .status-page h3 { font-family: var(--font-heading); font-weight: 700; font-size: 28px; color: var(--color-fg); }
+  .status-page p { margin-top: 16px; font-size: 14px; color: var(--color-fg-secondary); }
+
   /* ===== EMPTY STATE ===== */
   .empty-state {
     text-align: center;
@@ -1482,6 +1580,9 @@
     .nav.open .nav-links { display: flex; order: 3; flex-direction: column; gap: 4px; width: 100%; padding: 12px 0 8px; }
     .nav.open .nav-right { display: flex; order: 4; width: 100%; padding-bottom: 8px; }
     .nav.open .nav-right .btn { flex: 1; justify-content: center; }
+
+    .confirm-dialog-main { flex-direction: column; }
+    .status-page h3 { font-size: 22px; }
   }
 </style>
 </head>
@@ -1684,14 +1785,63 @@
   </div>
 
   <div class="callout callout-primary" style="margin-top:24px;">
-    <span class="callout-icon">*</span>
+    <span class="callout-icon"><i data-lucide="lightbulb" width="20" height="20"></i></span>
     <span>Galmuri11은 항상 <strong>font-weight: 700 (Bold)</strong>로만 사용합니다. Regular(400) 사용은 금지.</span>
   </div>
 
   <div class="callout callout-secondary" style="margin-top:12px;">
-    <span class="callout-icon">!</span>
+    <span class="callout-icon"><i data-lucide="type" width="20" height="20"></i></span>
     <span>코드 블록, 인라인 코드, Chip 등 가독성이 필요한 곳은 모두 Pretendard를 사용합니다.</span>
   </div>
+
+  <div class="callout callout-info" style="margin-top:12px;">
+    <span class="callout-icon"><i data-lucide="info" width="20" height="20"></i></span>
+    <span>업로드한 파일은 7일 뒤 자동으로 삭제됩니다.</span>
+  </div>
+
+  <div class="callout callout-success" style="margin-top:12px;">
+    <span class="callout-icon"><i data-lucide="circle-check" width="20" height="20"></i></span>
+    <span>배포가 완료되었습니다. 변경 사항이 사이트에 반영되었습니다.</span>
+  </div>
+
+  <div class="callout callout-warning" style="margin-top:12px;">
+    <span class="callout-icon"><i data-lucide="triangle-alert" width="20" height="20"></i></span>
+    <span>저장 공간이 90% 찼습니다. 오래된 파일을 정리해 주세요.</span>
+  </div>
+
+  <div class="callout callout-error" role="alert" style="margin-top:12px;">
+    <span class="callout-icon"><i data-lucide="circle-alert" width="20" height="20"></i></span>
+    <span>비밀번호가 올바르지 않습니다. 5회 틀리면 파일이 잠깁니다.</span>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- BUTTONS -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-label">Action</div>
+    <div class="section-title galmuri">Buttons</div>
+  </div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+    <button class="btn btn-primary">Primary</button>
+    <button class="btn btn-secondary">Secondary</button>
+    <button class="btn btn-ghost">Ghost</button>
+    <button class="btn btn-danger"><i data-lucide="trash-2" width="16" height="16"></i>Danger</button>
+  </div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:16px;">
+    <button class="btn btn-sm btn-primary">Primary</button>
+    <button class="btn btn-sm btn-secondary">Secondary</button>
+    <button class="btn btn-sm btn-ghost">Ghost</button>
+    <button class="btn btn-sm btn-danger">Danger</button>
+  </div>
+  <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;margin-top:16px;">
+    <button type="button" class="btn-icon" aria-label="다운로드" title="다운로드"><i data-lucide="download" width="16" height="16"></i></button>
+    <button type="button" class="btn-icon" aria-label="QR 코드" title="QR 코드"><i data-lucide="qr-code" width="16" height="16"></i></button>
+    <button type="button" class="btn-icon destructive" aria-label="삭제" title="삭제"><i data-lucide="trash-2" width="16" height="16"></i></button>
+    <button type="button" class="btn-icon" aria-label="알림" title="알림" style="margin-left:12px;"><i data-lucide="bell" width="24" height="24"></i></button>
+  </div>
+  <p style="font-size:13px;color:var(--color-fg-muted);margin-top:12px;">Danger는 되돌릴 수 없는 동작을 최종 확인할 때만 씁니다. 아이콘 버튼은 목록 행에서 16px, 네비게이션에서 24px 아이콘을 씁니다.</p>
 </section>
 
 <hr class="divider">
@@ -1752,6 +1902,7 @@
     <button class="btn btn-primary" disabled>Primary</button>
     <button class="btn btn-secondary" disabled>Secondary</button>
     <button class="btn btn-ghost" disabled>Ghost</button>
+    <button class="btn btn-danger" disabled>Danger</button>
   </div>
   <div style="margin-top:20px;max-width:400px;">
     <input type="text" class="input" value="비활성 입력 필드" disabled>
@@ -2011,26 +2162,52 @@
     <div class="section-label">Overlay</div>
     <div class="section-title galmuri">Modal / Dialog</div>
   </div>
-  <button class="btn btn-primary" onclick="document.getElementById('demoModal').classList.add('open')">Open Modal</button>
-  <p style="font-size:13px;color:var(--color-fg-muted);margin-top:8px;">버튼을 클릭하면 모달이 열립니다.</p>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;">
+    <button class="btn btn-primary" onclick="document.getElementById('demoModal').classList.add('open')">Open Modal</button>
+    <button class="btn btn-ghost" onclick="document.getElementById('demoConfirmDialog').classList.add('open')">Open Confirm Dialog</button>
+  </div>
+  <p style="font-size:13px;color:var(--color-fg-muted);margin-top:8px;">버튼을 클릭하면 모달이 열립니다. 삭제처럼 되돌릴 수 없는 동작은 Confirm Dialog로 확인합니다.</p>
 </section>
 
 <div class="modal-overlay" id="demoModal" onclick="if(event.target===this)this.classList.remove('open')">
   <div class="modal">
     <div class="modal-header">
-      <h3>프로젝트 삭제</h3>
+      <h3>프로젝트 이름 변경</h3>
       <button class="modal-close" onclick="document.getElementById('demoModal').classList.remove('open')">&#10005;</button>
     </div>
     <div class="modal-body">
-      <p>정말로 이 프로젝트를 삭제하시겠습니까? 이 작업은 되돌릴 수 없으며, 모든 데이터가 영구적으로 삭제됩니다.</p>
+      <p>프로젝트 이름은 대시보드와 공유 링크에 표시됩니다.</p>
       <div style="margin-top:16px;">
-        <span class="demo-label">확인을 위해 프로젝트 이름을 입력하세요</span>
-        <input type="text" class="input" placeholder="my-project" style="width:100%;margin-top:4px;">
+        <span class="demo-label">새 프로젝트 이름</span>
+        <input type="text" class="input" value="lemon-protocol" style="width:100%;margin-top:4px;">
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost btn-sm" onclick="document.getElementById('demoModal').classList.remove('open')">Cancel</button>
-      <button class="btn btn-sm" style="background:var(--color-error);color:var(--color-bg);">Delete</button>
+      <button class="btn btn-sm btn-primary">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="demoConfirmDialog" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal confirm-dialog">
+    <div class="confirm-dialog-main">
+      <div class="confirm-dialog-icon"><i data-lucide="triangle-alert" width="20" height="20"></i></div>
+      <div class="confirm-dialog-text">
+        <h3>프로젝트를 삭제할까요?</h3>
+        <p>삭제하면 프로젝트의 모든 데이터가 영구적으로 사라지며, 복구할 수 없습니다.</p>
+        <div class="confirm-dialog-target">
+          <i data-lucide="folder" width="18" height="18"></i>
+          <div>
+            <div class="confirm-dialog-target-name">lemon-protocol</div>
+            <div class="confirm-dialog-target-meta">파일 128개 · 2026. 10. 26. 생성</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="confirm-dialog-actions">
+      <button class="btn btn-ghost" onclick="document.getElementById('demoConfirmDialog').classList.remove('open')">취소</button>
+      <button class="btn btn-danger"><i data-lucide="trash-2" width="16" height="16"></i>삭제</button>
     </div>
   </div>
 </div>
@@ -2284,6 +2461,22 @@
     <h3>프로젝트가 없습니다</h3>
     <p>새 프로젝트를 만들어 시작하세요.</p>
     <button class="btn btn-primary">Create Project</button>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ICON BADGE -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-label">State</div>
+    <div class="section-title galmuri">Icon Badge</div>
+  </div>
+  <div class="status-page">
+    <div class="icon-badge"><i data-lucide="file-x" width="32" height="32" stroke-width="1.5"></i></div>
+    <div class="status-page-code">404</div>
+    <h3>페이지를 찾을 수 없습니다</h3>
+    <p>주소가 바뀌었거나, 이미 삭제되었을 수 있습니다.</p>
   </div>
 </section>
 

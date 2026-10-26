@@ -26,7 +26,7 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 | `images/lemon-logo.webp` | 로고 (원형 엠블럼) | Nav 로고, OG 이미지 |
 | `images/lemon-avatar.webp` | 아바타 (얼굴 크롭) | 프로필 사진, Avatar 컴포넌트, 댓글 프로필 |
 | `images/lemon-character.webp` | 마스코트 (풀샷, 투명 배경) | 히어로 일러스트, 랜딩 페이지, About 페이지 |
-| `images/lemon-character-sd.webp` | 마스코트 SD (풀샷, 투명 배경) | 빈 상태, 404 페이지, 작은 일러스트 영역 |
+| `images/lemon-character-sd.webp` | 마스코트 SD (풀샷, 투명 배경) | 빈 상태, 작은 일러스트 영역. 404·안내 화면에는 [Icon Badge](#icon-badge)를 쓴다 |
 | `images/lemon-character-mono.svg` | 마스코트 단색 마크 SVG | 푸터, 워터마크 등 한 가지 색만 쓰는 곳. `fill: currentColor`라서 인라인 SVG나 CSS mask로 쓰면 CSS 색상을 따른다 |
 | `images/favicon.ico` | 파비콘 (멀티사이즈 ICO) | 브라우저 탭 아이콘 |
 | `images/favicon-32.png` | 파비콘 32x32 PNG | 브라우저 탭 아이콘 (모던 브라우저) |
@@ -132,6 +132,7 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
   --color-warning-dim: rgba(245, 158, 11, 0.12);
   --color-warning-dim-border: rgba(245, 158, 11, 0.25);
   --color-error: #EF4444;
+  --color-error-hover: #F87171;
   --color-error-subtle: rgba(239, 68, 68, 0.06);
   --color-error-dim: rgba(239, 68, 68, 0.12);
   --color-error-dim-border: rgba(239, 68, 68, 0.25);
@@ -198,7 +199,7 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 - **Info** `--color-info`: 안내, 정보, 알림 상태.
 - **Success** `--color-success`: 정상, 활성, 완료 상태.
 - **Warning** `--color-warning`: 경고, 진행 중 상태.
-- **Error** `--color-error`: 에러, 삭제, 위험 상태.
+- **Error** `--color-error`: 에러, 삭제, 위험 상태. Danger 버튼의 호버는 `--color-error-hover`.
 - 상태마다 틴트 토큰 세 가지를 둔다: `-subtle`(Toast처럼 넓은 영역의 배경), `-dim`(배지, 아이콘 배경), `-dim-border`(테두리).
 - 상태는 색만으로 전달하지 않는다. 아이콘, 텍스트 레이블, 툴팁 중 하나를 항상 함께 둔다([WCAG 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)). 액센트가 따뜻한 색에 몰려 있어 Warning은 Primary와, Error는 Secondary와 색만으로는 구분이 어렵기 때문이다.
 
@@ -259,6 +260,7 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 - **Galmuri11은 브랜딩 전용**: 제목과 레이블에서만 사용하여 8bit 감성을 포인트로 부여한다. 본문이나 UI 요소에 Galmuri를 사용하면 가독성이 떨어진다.
 - **Pretendard가 기본**: 의심스러우면 Pretendard를 쓴다. 코드(코드 블록, 인라인 코드)만 예외로 JetBrains Mono를 쓴다.
 - **Weight 절제**: Galmuri11은 700 단일 weight. Pretendard는 400(본문), 500(링크/탭 등 인터랙티브 텍스트), 600(레이블/버튼), 700(컴포넌트 제목) 네 가지만 사용.
+- **한글 줄바꿈**: 전역 CSS의 `body`에 `word-break: keep-all`과 `overflow-wrap: break-word`를 둔다. 한글이 단어 중간에서 끊기지 않고, URL처럼 띄어쓰기 없는 긴 문자열은 넘칠 때만 줄을 바꾼다. `overflow-wrap: anywhere`는 표·flex의 칸 너비 계산까지 바꾸므로 쓰지 않는다.
 
 ## 5. Component Stylings
 
@@ -290,7 +292,25 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 - Font: Pretendard 14px weight 600
 - Hover: border `var(--color-border-hover)`, text `var(--color-fg)`
 
+**Danger**
+- 삭제처럼 되돌릴 수 없는 동작을 최종 확인하는 버튼에만 쓴다. 목록 행처럼 같은 버튼이 반복되는 자리에는 쓰지 않는다.
+- Background: `var(--color-error)`
+- Text: `var(--color-bg)` (배경색)
+- Padding: 10px 20px
+- Radius: `var(--radius-lg)`
+- Font: Pretendard 14px weight 600
+- Hover: background `var(--color-error-hover)`. Primary와 달리 밝아진다. 어둡게 하면 텍스트 대비가 4.5:1 아래로 떨어진다.
+
 **Small variant**: font 13px, padding 6px 14px, radius `var(--radius-md)`.
+
+**Icon Button** (아이콘만 있는 버튼)
+- 목록 행의 다운로드·공유·삭제, 네비게이션의 알림 토글처럼 아이콘만으로 뜻이 통하는 반복 동작에 쓴다.
+- Size: 40x40px, radius `var(--radius-lg)`, background transparent, border 없음
+- Icon: Lucide 16px (목록 행, 인라인 동작), 24px (네비게이션)
+- Color: `var(--color-fg-muted)`
+- Hover: text `var(--color-primary)`, background `var(--color-primary-dim)`
+- Destructive (삭제 등) hover: text `var(--color-error)`, background `var(--color-error-dim)`
+- `aria-label`은 필수이고, 호버 시 이름을 보여 주는 `title`을 함께 둔다.
 
 ### Cards
 - Background: `var(--color-surface)`
@@ -340,6 +360,10 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 - Font: Pretendard 14px, line-height 1.6
 - Primary callout: background `var(--color-primary-dim)`, border `var(--color-primary-dim-border)`
 - Secondary callout: background `var(--color-secondary-dim)`, border `var(--color-secondary-dim-border)`
+- 상태 callout (Info, Success, Warning, Error): background `var(--color-{상태}-subtle)`, border `var(--color-{상태}-dim-border)`. Toast와 같은 색 조합이다.
+- Text: `var(--color-fg)`
+- Icon: Lucide 20px, 텍스트 왼쪽, gap 12px. Primary·Secondary는 내용에 맞는 아이콘을 액센트 색으로, 상태 callout은 상태 색으로 Info `info`, Success `circle-check`, Warning `triangle-alert`, Error `circle-alert`를 쓴다.
+- Error callout에는 `role="alert"`를 줘서 스크린 리더가 바로 읽게 한다.
 
 ### Navigation
 - Height: 56px
@@ -452,6 +476,19 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 - Body: padding 24px, Pretendard 14px, color `var(--color-fg-secondary)`
 - Footer: padding 16px 24px, border-top, 버튼 우측 정렬
 
+### Confirm Dialog (Destructive)
+- 삭제처럼 되돌릴 수 없는 동작을 실행하기 직전에 한 번 더 확인한다. 그 외의 확인에는 쓰지 않는다.
+- Overlay·Container: Modal과 같다. 단 max-width 460px, padding 24px이고 헤더·푸터 구분선과 닫기(X) 버튼을 두지 않는다. ESC, 바깥 클릭, 취소 버튼으로 닫는다.
+- Icon: 40px, radius `var(--radius-lg)`, background `var(--color-error-dim)`, border 1px solid `var(--color-error-dim-border)`, Lucide `triangle-alert` 20px `var(--color-error)`
+- Layout: 아이콘 왼쪽, 텍스트 오른쪽 (gap 16px). 모바일(< 640px)에서는 아이콘을 제목 위로 올린다.
+- Title: Pretendard 17px weight 700, 질문형으로 쓴다 ("공유를 삭제할까요?")
+- Description: Pretendard 14px, line-height 1.6, color `var(--color-fg-secondary)`. 실행하면 무엇이 사라지는지 적는다.
+- Target: 무엇을 지우는지 특정할 수 있으면 반드시 보여 준다. 일괄 삭제처럼 대상을 하나로 특정할 수 없을 때만 생략한다.
+  - background `var(--color-bg)`, border 1px solid `var(--color-border)`, radius `var(--radius-lg)`, padding 12px 16px, margin-top 16px
+  - 아이콘 18px `var(--color-fg-muted)` + 이름 Pretendard 14px weight 600 `var(--color-fg)` + 부가 정보 12px `var(--color-fg-muted)`
+  - 이름은 말줄임 없이 전체를 보여 준다 (`word-break: break-all`)
+- Actions: margin-top 24px, 우측 정렬, gap 8px. Ghost "취소" + Danger 버튼(Lucide `trash-2` 16px + 동작 이름). 처리 중에는 아이콘 자리에 Spinner sm을 둔다.
+
 ### Toast / Notification
 - Container: padding 12px 16px, radius `var(--radius-lg)`, border 1px solid
 - Icon: 20px circle, 배경 틴트 + 아이콘 색상
@@ -526,6 +563,13 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 - Title: Pretendard 17px weight 700
 - Description: Pretendard 14px, color `var(--color-fg-muted)`
 - CTA: Primary button
+
+### Icon Badge
+- 404, 권한 없음, 승인 대기처럼 화면 전체가 하나의 안내인 페이지의 맨 위에 둔다. 마스코트 이미지는 쓰지 않는다.
+- Size: 64x64px, radius `var(--radius-xl)`
+- Background `var(--color-primary-dim)`, border 1px solid `var(--color-primary-dim-border)`
+- Icon: Lucide 32px, stroke 1.5px, color `var(--color-primary)`
+- 아래로 margin 24px을 두고 제목(Galmuri11 Bold 28px, 모바일 22px)과 설명을 가운데 정렬한다.
 
 ## 6. Layout Principles
 
