@@ -1,6 +1,6 @@
 {
   "name": "@lemondouble/ui",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "LemonDouble 디자인 시스템의 React 컴포넌트와 토큰",
   "repository": {
     "type": "git",

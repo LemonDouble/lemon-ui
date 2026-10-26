@@ -47,6 +47,45 @@ export const ModalStory: Story = {
   },
 };
 
+export const Processing: Story = {
+  name: "처리 중 (닫기 막기)",
+  render: function Render() {
+    const [open, setOpen] = useState(false);
+    const [processing, setProcessing] = useState(false);
+    function confirm() {
+      setProcessing(true);
+      setTimeout(() => {
+        setProcessing(false);
+        setOpen(false);
+      }, 3000);
+    }
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>당첨 결과 열기</Button>
+        {open && (
+          <Modal
+            title="당첨!"
+            dismissible={!processing}
+            onClose={() => setOpen(false)}
+            footer={
+              <>
+                <Button variant="ghost" size="sm" disabled={processing} onClick={() => setOpen(false)}>
+                  취소
+                </Button>
+                <Button size="sm" disabled={processing} onClick={confirm}>
+                  {processing ? "처리 중..." : "확정"}
+                </Button>
+              </>
+            }
+          >
+            확정을 누르면 3초 동안 처리 중 상태가 됩니다. 그동안에는 ESC, 바깥 클릭, 닫기 버튼으로 닫히지 않습니다.
+          </Modal>
+        )}
+      </>
+    );
+  },
+};
+
 export const Confirm: Story = {
   name: "ConfirmDialog",
   render: function Render() {

@@ -479,6 +479,7 @@ React 프로젝트는 아래 컴포넌트를 `@lemondouble/ui`에서 가져다 �
 - Close button: 32px, border 1px solid `var(--color-border)`, radius `var(--radius-md)`
 - Body: padding 24px, Pretendard 14px, color `var(--color-fg-secondary)`
 - Footer: padding 16px 24px, border-top, 버튼 우측 정렬
+- 닫기: ESC, 바깥 클릭, 닫기 버튼으로 닫는다. 저장·확정 처리 중처럼 닫히면 안 되는 동안에는 셋 다 막는다(`dismissible={false}`).
 
 ### Confirm Dialog (Destructive)
 - 삭제처럼 되돌릴 수 없는 동작을 실행하기 직전에 한 번 더 확인한다. 그 외의 확인에는 쓰지 않는다.

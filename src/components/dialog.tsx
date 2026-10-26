@@ -6,15 +6,18 @@ import { File, Trash2, TriangleAlert, X, type LucideIcon } from "lucide-react";
 import { Button } from "./button.js";
 import { ButtonSpinner } from "./spinner.js";
 
-// 여는 버튼이 목록 행(<Link>) 안에 있을 수 있어서, body로 portal하고 클릭 전파를 막아 행 링크로 이동하지 않게 한다
+// 여는 버튼이 목록 행(<Link>) 안에 있을 수 있어서, body로 portal하고 클릭 전파를 막아 행 링크로 이동하지 않게 한다.
+// dismissible이 false이면 처리 중처럼 닫히면 안 되는 동안 ESC와 바깥 클릭을 무시한다
 export function Dialog({
   labelledBy,
   onClose,
+  dismissible = true,
   className = "",
   children,
 }: {
   labelledBy: string;
   onClose: () => void;
+  dismissible?: boolean;
   className?: string;
   children: ReactNode;
 }) {
@@ -29,9 +32,12 @@ export function Dialog({
       ref={dialogRef}
       aria-labelledby={labelledBy}
       onClose={onClose}
+      onCancel={(e) => {
+        if (!dismissible) e.preventDefault();
+      }}
       onClick={(e) => {
         e.stopPropagation();
-        if (e.target === e.currentTarget) onClose();
+        if (dismissible && e.target === e.currentTarget) onClose();
       }}
       className={`m-auto w-[calc(100%-2rem)] rounded-xl border border-border bg-surface p-0 text-fg [--field-bg:var(--color-bg)] backdrop:bg-overlay backdrop:backdrop-blur-[4px] ${className}`}
     >
@@ -46,18 +52,25 @@ export function Modal({
   onClose,
   footer,
   wide = false,
+  dismissible = true,
   children,
 }: {
   title: ReactNode;
   onClose: () => void;
   footer?: ReactNode;
   wide?: boolean;
+  dismissible?: boolean;
   children: ReactNode;
 }) {
   const titleId = useId();
 
   return (
-    <Dialog labelledBy={titleId} onClose={onClose} className={wide ? "max-w-[960px]" : "max-w-[480px]"}>
+    <Dialog
+      labelledBy={titleId}
+      onClose={onClose}
+      dismissible={dismissible}
+      className={wide ? "max-w-[960px]" : "max-w-[480px]"}
+    >
       <div className="flex items-center justify-between gap-4 border-b border-border px-6 py-5">
         <h2 id={titleId} className="min-w-0 truncate text-[15px] font-bold">
           {title}
@@ -65,8 +78,9 @@ export function Modal({
         <button
           type="button"
           onClick={onClose}
+          disabled={!dismissible}
           aria-label="닫기"
-          className="inline-flex size-8 shrink-0 items-center justify-center rounded-md border border-border text-fg-muted transition-colors hover:border-border-hover hover:text-fg"
+          className="inline-flex size-8 shrink-0 items-center justify-center rounded-md border border-border text-fg-muted transition-colors hover:border-border-hover hover:text-fg disabled:pointer-events-none disabled:opacity-40"
         >
           <X size={16} />
         </button>
