@@ -175,7 +175,24 @@
   .nav.open .nav-menu-button .icon-open { display: none; }
   .nav.open .nav-menu-button .icon-close { display: block; }
 
-  .nav-right { display: flex; gap: 12px; align-items: center; }
+  .nav-right { display: flex; align-items: center; }
+  .nav-right .btn { margin-left: 8px; }
+  .nav-divider { width: 1px; height: 20px; margin: 0 12px; background: var(--color-border); }
+  .nav-mobile-actions { display: none; align-items: center; gap: 4px; }
+  .nav-mobile-menu { display: none; }
+  .nav-menu-item {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-fg-secondary);
+    text-decoration: none;
+  }
+  .nav-menu-item:hover { color: var(--color-fg); }
+  .nav-menu-item.active { color: var(--color-primary); background: var(--color-primary-dim); }
 
   /* ===== ICONS ===== */
   .icon-row { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; }
@@ -916,19 +933,22 @@
   .dropdown-menu {
     position: absolute;
     top: calc(100% + 4px);
-    left: 0;
+    right: 0;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     padding: 4px;
-    min-width: 200px;
+    width: 176px;
     z-index: var(--z-dropdown);
     display: none;
   }
   .dropdown-menu.open { display: block; }
+  .dropdown-separator { height: 1px; margin: 4px 0; background: var(--color-border); }
 
   .dropdown-item {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     width: 100%;
     padding: 8px 12px;
     font-size: 14px;
@@ -943,6 +963,8 @@
   }
   .dropdown-item:hover { background: var(--color-surface-hover); color: var(--color-fg); }
   .dropdown-item.active { color: var(--color-primary); }
+  .dropdown-item.destructive { color: var(--color-error); }
+  .dropdown-item.done { color: var(--color-success); }
 
   /* ===== TOAST ===== */
   .toast-container {
@@ -955,11 +977,15 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    width: fit-content;
+    max-width: 100%;
     padding: 12px 16px;
     border-radius: var(--radius-lg);
     font-size: 14px;
-    border: 1px solid var(--color-border);
-    background: var(--color-surface);
+    font-weight: 600;
+    color: var(--color-fg);
+    border: 1px solid var(--toast-color);
+    background: linear-gradient(var(--toast-dim), var(--toast-dim)), var(--color-surface);
   }
 
   .toast-icon {
@@ -970,29 +996,25 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 11px;
-    font-weight: 700;
+    background: var(--toast-dim);
+    color: var(--toast-color);
   }
 
-  .toast-message { flex: 1; color: var(--color-fg); }
-  .toast-dismiss {
-    color: var(--color-fg-muted);
-    cursor: pointer;
-    font-size: 16px;
-    background: none;
-    border: none;
-    padding: 0 4px;
+  .toast--success { --toast-color: var(--color-success); --toast-dim: var(--color-success-dim); }
+  .toast--warning { --toast-color: var(--color-warning); --toast-dim: var(--color-warning-dim); }
+  .toast--error { --toast-color: var(--color-error); --toast-dim: var(--color-error-dim); }
+  .toast--info { --toast-color: var(--color-info); --toast-dim: var(--color-info-dim); }
+
+  .toast-region {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 24px;
+    z-index: var(--z-toast);
+    display: flex;
+    justify-content: center;
+    padding: 0 16px;
+    pointer-events: none;
   }
-
-  .toast--success { border-color: var(--color-success-dim-border); background: var(--color-success-subtle); }
-  .toast--success .toast-icon { background: var(--color-success-dim); color: var(--color-success); }
-  .toast--warning { border-color: var(--color-warning-dim-border); background: var(--color-warning-subtle); }
-  .toast--warning .toast-icon { background: var(--color-warning-dim); color: var(--color-warning); }
-  .toast--error { border-color: var(--color-error-dim-border); background: var(--color-error-subtle); }
-  .toast--error .toast-icon { background: var(--color-error-dim); color: var(--color-error); }
-
-  .toast--info { border-color: var(--color-info-dim-border); background: var(--color-info-subtle); }
-  .toast--info .toast-icon { background: var(--color-info-dim); color: var(--color-info); }
 
   /* ===== PAGINATION ===== */
   .pagination {
@@ -1300,8 +1322,16 @@
     border: 1px solid var(--color-primary-dim-border);
     color: var(--color-primary);
   }
-  .status-page { padding: 48px 32px; text-align: center; }
-  .status-page-code {
+  .notice-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 48px 20px;
+    text-align: center;
+  }
+  .notice-page-code {
     margin-bottom: 12px;
     font-family: var(--font-heading);
     font-weight: 700;
@@ -1309,8 +1339,14 @@
     letter-spacing: 1.5px;
     color: var(--color-primary);
   }
-  .status-page h3 { font-family: var(--font-heading); font-weight: 700; font-size: 28px; color: var(--color-fg); }
-  .status-page p { margin-top: 16px; font-size: 14px; color: var(--color-fg-secondary); }
+  .notice-page h3 { margin-bottom: 12px; font-family: var(--font-heading); font-weight: 700; font-size: 28px; color: var(--color-fg); }
+  .notice-page p { font-size: 14px; line-height: 1.6; color: var(--color-fg-secondary); }
+  .notice-page p strong { color: var(--color-fg); }
+  .notice-page-actions { display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; max-width: 320px; margin-top: 32px; }
+  .notice-page-actions .btn { width: 100%; justify-content: center; }
+  .notice-page-links { display: flex; gap: 16px; }
+  .text-link { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; color: var(--color-fg-secondary); text-decoration: none; }
+  .text-link:hover { color: var(--color-fg); }
 
   /* ===== EMPTY STATE ===== */
   .empty-state {
@@ -1558,6 +1594,248 @@
     transition: fill 0.15s;
   }
   .brand-icon:hover { fill: var(--color-fg); }
+
+  /* ===== SURFACE 위의 입력 요소 ===== */
+  .surface-panel {
+    max-width: 560px;
+    margin-top: 32px;
+    padding: 20px;
+    display: grid;
+    gap: 12px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+  }
+  .surface-panel .input,
+  .surface-panel .select,
+  .surface-panel .textarea,
+  .surface-panel .segmented,
+  .surface-panel .stepper { background: var(--color-bg); }
+  .field-label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: var(--color-fg-secondary); }
+
+  /* ===== SEGMENTED CONTROL ===== */
+  .segmented {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 4px;
+    padding: 4px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+  .segmented-item {
+    padding: 8px 0;
+    background: none;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-fg-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .segmented-item:hover { color: var(--color-fg); }
+  .segmented-item[aria-checked="true"] { background: var(--color-primary-dim); color: var(--color-primary); }
+  .segmented.sm { display: inline-grid; gap: 2px; padding: 3px; }
+  .segmented.sm .segmented-item { padding: 4px 12px; font-size: 12px; border-radius: var(--radius-sm); }
+
+  /* ===== STEPPER ===== */
+  .stepper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+  .stepper-button {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-fg-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .stepper-button:hover { background: var(--color-surface-hover); color: var(--color-fg); }
+  .stepper-value { display: flex; align-items: baseline; justify-content: center; gap: 4px; }
+  .stepper-value input {
+    width: 56px;
+    background: transparent;
+    border: none;
+    outline: none;
+    text-align: right;
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-fg);
+  }
+  .stepper-value input::placeholder { font-size: 16px; font-weight: 600; color: var(--color-fg-secondary); }
+  .stepper-value input:placeholder-shown { width: 96px; text-align: center; }
+  .stepper-value input:placeholder-shown + .stepper-unit { display: none; }
+  .stepper-unit { font-size: 14px; color: var(--color-fg-secondary); }
+
+  /* ===== COPY FIELD ===== */
+  .copy-value {
+    padding: 12px 16px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-fg);
+    word-break: break-all;
+    user-select: all;
+  }
+  .copy-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+  .copy-inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 4px 4px 16px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+  .copy-inline-value {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-fg);
+    user-select: all;
+  }
+  .btn-icon.done { color: var(--color-success); }
+  .icon-done,
+  .done .icon-idle { display: none; }
+  .done .icon-done { display: block; }
+
+  /* ===== ROW LIST ===== */
+  .row-list {
+    overflow: hidden;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+  }
+  .row-list-header {
+    padding: 8px 16px;
+    font-size: 12px;
+    color: var(--color-fg-muted);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .row-list-scroll { max-height: 200px; overflow-y: auto; }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 16px 20px;
+    background: none;
+    border: none;
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-sans);
+    color: inherit;
+    text-align: left;
+    text-decoration: none;
+  }
+  .row:first-child { border-top: none; }
+  a.row, button.row { cursor: pointer; transition: background 0.15s; }
+  a.row:hover, button.row:hover { background: var(--color-surface-hover); }
+  .row-list.compact .row { padding: 10px 16px; }
+  .row-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-lg);
+    background: var(--color-primary-dim);
+    color: var(--color-primary);
+  }
+  .row-avatar { width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%; object-fit: cover; }
+  .row-small-icon { display: flex; flex-shrink: 0; color: var(--color-fg-muted); }
+  .row-body { flex: 1; min-width: 0; }
+  .row-eyebrow { margin-bottom: 2px; font-size: 12px; font-weight: 600; color: var(--color-primary); }
+  .row-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; font-weight: 600; color: var(--color-fg); }
+  .row-meta { margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: var(--color-fg-muted); }
+  .row-trailing { display: flex; align-items: center; gap: 4px; flex-shrink: 0; font-size: 12px; color: var(--color-fg-secondary); }
+  .row-value { font-size: 14px; color: var(--color-fg-secondary); }
+  .row.dimmed .row-icon { background: var(--color-border); color: var(--color-fg-muted); }
+  .row.dimmed .row-title { color: var(--color-fg-muted); }
+
+  /* ===== FILE DROP ZONE ===== */
+  .drop-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 56px 24px;
+    background: none;
+    border: 2px dashed var(--color-border);
+    border-radius: var(--radius-xl);
+    font-family: var(--font-sans);
+    color: var(--color-fg);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .drop-zone:hover { border-color: var(--color-border-hover); }
+  .drop-zone.dragging { border-color: var(--color-primary); background: var(--color-primary-dim); }
+  .drop-zone.page { padding: 64px 32px; cursor: default; }
+  .drop-zone-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-xl);
+    background: var(--color-primary-dim);
+    color: var(--color-primary);
+  }
+  .drop-zone-title { font-size: 14px; font-weight: 600; }
+  .drop-zone-desc { margin-top: 4px; font-size: 12px; color: var(--color-fg-muted); }
+  .drop-zone.page .drop-zone-title { font-size: 17px; font-weight: 700; }
+  .drop-zone.page .drop-zone-desc { margin-top: 0; font-size: 14px; }
+  .file-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+  }
+  .file-card-thumb {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-lg);
+    background: var(--color-primary-dim);
+    color: var(--color-primary);
+  }
+  .file-card-body { flex: 1; min-width: 0; }
+  .drop-zone[hidden], .file-card[hidden] { display: none; }
+
   /* ===== RESPONSIVE (DESIGN.md 9. Responsive Behavior) ===== */
   @media (max-width: 1023px) {
     .nav { padding: 0 20px; }
@@ -1575,14 +1853,15 @@
     .footer { padding: 32px 20px; }
 
     .nav { padding: 8px 20px; height: auto; min-height: 56px; flex-wrap: wrap; }
-    .nav-menu-button { display: inline-flex; order: 2; }
     .nav-links, .nav-right { display: none; }
-    .nav.open .nav-links { display: flex; order: 3; flex-direction: column; gap: 4px; width: 100%; padding: 12px 0 8px; }
-    .nav.open .nav-right { display: flex; order: 4; width: 100%; padding-bottom: 8px; }
-    .nav.open .nav-right .btn { flex: 1; justify-content: center; }
+    .nav-mobile-actions { display: flex; }
+    .nav-menu-button { display: inline-flex; }
+    .nav.open .nav-mobile-menu { display: flex; flex-direction: column; gap: 4px; width: 100%; padding: 12px 0 8px; }
 
     .confirm-dialog-main { flex-direction: column; }
-    .status-page h3 { font-size: 22px; }
+    .notice-page h3 { font-size: 22px; }
+    .row { padding: 16px; }
+    .copy-actions .btn { flex: 1; justify-content: center; }
   }
 </style>
 </head>
@@ -1601,13 +1880,26 @@
     <a href="#" class="nav-link">About</a>
   </div>
   <div class="nav-right">
-    <a href="#" class="btn btn-sm btn-ghost">GitHub</a>
     <a href="#" class="btn btn-sm btn-primary">Contact</a>
+    <span class="nav-divider" aria-hidden="true"></span>
+    <button type="button" class="btn-icon" aria-label="알림" title="알림"><i data-lucide="bell" width="24" height="24"></i></button>
+    <button type="button" class="btn-icon" aria-label="로그아웃" title="로그아웃"><i data-lucide="log-out" width="24" height="24"></i></button>
   </div>
-  <button type="button" class="nav-menu-button" aria-label="메뉴 열기" aria-expanded="false" onclick="toggleNavMenu(this)">
-    <i data-lucide="menu" width="24" height="24" class="icon-open"></i>
-    <i data-lucide="x" width="24" height="24" class="icon-close"></i>
-  </button>
+  <div class="nav-mobile-actions">
+    <button type="button" class="btn-icon" aria-label="알림" title="알림"><i data-lucide="bell" width="24" height="24"></i></button>
+    <button type="button" class="nav-menu-button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="navMobileMenu" onclick="toggleNavMenu(this)">
+      <i data-lucide="menu" width="24" height="24" class="icon-open"></i>
+      <i data-lucide="x" width="24" height="24" class="icon-close"></i>
+    </button>
+  </div>
+  <div class="nav-mobile-menu" id="navMobileMenu">
+    <a href="#" class="nav-menu-item">Contact</a>
+    <a href="#" class="nav-menu-item active">Dashboard</a>
+    <a href="#" class="nav-menu-item">Projects</a>
+    <a href="#" class="nav-menu-item">Blog</a>
+    <a href="#" class="nav-menu-item">About</a>
+    <a href="#" class="nav-menu-item">로그아웃</a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -1858,6 +2150,24 @@
     <button class="btn btn-primary">Subscribe</button>
   </div>
 
+  <div class="surface-panel">
+    <span class="demo-label" style="margin-bottom:0;">카드 안에서는 입력 요소의 배경을 bg로 바꿉니다</span>
+    <div>
+      <label class="field-label" for="demoMemo">메모</label>
+      <input type="text" id="demoMemo" class="input" placeholder="받는 사람에게 보일 메모" style="width:100%;">
+    </div>
+    <div>
+      <label class="field-label" for="demoCategory">분류</label>
+      <div class="select-wrapper" style="display:block;">
+        <select id="demoCategory" class="select" style="width:100%;">
+          <option>문서</option>
+          <option>이미지</option>
+        </select>
+        <span class="select-arrow">&#9662;</span>
+      </div>
+    </div>
+  </div>
+
   <div class="toggle-row">
     <button type="button" role="switch" aria-checked="true" class="toggle on" onclick="this.setAttribute('aria-checked', this.classList.toggle('on'))"></button>
     <span class="toggle-label">다크 모드 활성화</span>
@@ -2022,6 +2332,34 @@
 
 <hr class="divider">
 
+<!-- SEGMENTED CONTROL -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-label">Form</div>
+    <div class="section-title galmuri">Segmented Control</div>
+  </div>
+  <div style="max-width:480px;">
+    <span class="demo-label" id="demoPresetLabel">기본 · 폼 필드</span>
+    <div class="segmented" role="radiogroup" aria-labelledby="demoPresetLabel">
+      <button type="button" class="segmented-item" role="radio" aria-checked="false">1회성</button>
+      <button type="button" class="segmented-item" role="radio" aria-checked="false">비밀</button>
+      <button type="button" class="segmented-item" role="radio" aria-checked="true">일반</button>
+      <button type="button" class="segmented-item" role="radio" aria-checked="false">장기</button>
+    </div>
+  </div>
+  <div style="margin-top:24px;">
+    <span class="demo-label" id="demoActionLabel">Small · 목록 행, 툴바</span>
+    <div class="segmented sm" role="radiogroup" aria-labelledby="demoActionLabel">
+      <button type="button" class="segmented-item" role="radio" aria-checked="true">번역</button>
+      <button type="button" class="segmented-item" role="radio" aria-checked="false">지우기</button>
+      <button type="button" class="segmented-item" role="radio" aria-checked="false">그대로</button>
+    </div>
+  </div>
+  <p style="font-size:13px;color:var(--color-fg-muted);margin-top:12px;">값 하나를 고를 때 씁니다. 아래 내용을 바꿀 때는 Tabs를 씁니다.</p>
+</section>
+
+<hr class="divider">
+
 <!-- BREADCRUMB -->
 <section class="section">
   <div class="section-header">
@@ -2063,6 +2401,76 @@
 
 <hr class="divider">
 
+<!-- ROW LIST -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-label">Content</div>
+    <div class="section-title galmuri">Row List</div>
+  </div>
+  <div class="demo-row">
+    <div class="demo-col">
+      <span class="demo-label">기본 · 항목 목록</span>
+      <div class="row-list">
+        <a href="#" class="row">
+          <span class="row-icon"><i data-lucide="file-text" width="20" height="20"></i></span>
+          <div class="row-body">
+            <div class="row-eyebrow">회의 자료</div>
+            <div class="row-title">회의록_최종.pdf</div>
+            <div class="row-meta">2.4 MB · 다운로드 3회</div>
+          </div>
+          <div class="row-trailing">3일 남음</div>
+        </a>
+        <a href="#" class="row">
+          <span class="row-icon"><i data-lucide="file-archive" width="20" height="20"></i></span>
+          <div class="row-body">
+            <div class="row-title">디자인 시안 모음.zip</div>
+            <div class="row-meta">148 MB · 다운로드 0회</div>
+          </div>
+          <div class="row-trailing">7일 남음</div>
+        </a>
+        <a href="#" class="row dimmed">
+          <span class="row-icon"><i data-lucide="image" width="20" height="20"></i></span>
+          <div class="row-body">
+            <div class="row-title">휴가 사진.jpg</div>
+            <div class="row-meta">5.1 MB · 다운로드 12회</div>
+          </div>
+          <div class="row-trailing">만료</div>
+        </a>
+      </div>
+    </div>
+    <div class="demo-col">
+      <span class="demo-label">기본 · 설정 행</span>
+      <div class="row-list">
+        <button type="button" class="row">
+          <span class="row-small-icon"><i data-lucide="clock" width="16" height="16"></i></span>
+          <span class="row-body row-title">만료</span>
+          <span class="row-value">7일</span>
+          <span class="row-small-icon"><i data-lucide="chevron-right" width="16" height="16"></i></span>
+        </button>
+        <button type="button" class="row">
+          <span class="row-small-icon"><i data-lucide="lock" width="16" height="16"></i></span>
+          <span class="row-body row-title">비밀번호</span>
+          <span class="row-value">없음</span>
+          <span class="row-small-icon"><i data-lucide="chevron-right" width="16" height="16"></i></span>
+        </button>
+      </div>
+      <span class="demo-label" style="margin-top:24px;">Compact · 머리글 + 최대 높이</span>
+      <div class="row-list compact">
+        <div class="row-list-header">5건 검색됨. 해당하는 가게를 선택하세요.</div>
+        <div class="row-list-scroll">
+          <button type="button" class="row"><div class="row-body"><div class="row-title">레몬 국밥</div><div class="row-meta">한식 › 국밥 · 서울 마포구 망원로 12</div></div><span class="row-small-icon"><i data-lucide="chevron-right" width="16" height="16"></i></span></button>
+          <button type="button" class="row"><div class="row-body"><div class="row-title">더블 순대국</div><div class="row-meta">한식 › 국밥 · 서울 마포구 포은로 8</div></div><span class="row-small-icon"><i data-lucide="chevron-right" width="16" height="16"></i></span></button>
+          <button type="button" class="row"><div class="row-body"><div class="row-title">망원 돼지국밥</div><div class="row-meta">한식 › 국밥 · 서울 마포구 망원동 401-3</div></div><span class="row-small-icon"><i data-lucide="chevron-right" width="16" height="16"></i></span></button>
+          <button type="button" class="row"><div class="row-body"><div class="row-title">합정 곰탕</div><div class="row-meta">한식 › 곰탕 · 서울 마포구 합정동 377</div></div><span class="row-small-icon"><i data-lucide="chevron-right" width="16" height="16"></i></span></button>
+          <button type="button" class="row"><div class="row-body"><div class="row-title">상수 설렁탕</div><div class="row-meta">한식 › 설렁탕 · 서울 마포구 상수동 92</div></div><span class="row-small-icon"><i data-lucide="chevron-right" width="16" height="16"></i></span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
 <!-- DROPDOWN & SELECT -->
 <section class="section">
   <div class="section-header">
@@ -2085,13 +2493,23 @@
     </div>
     <div class="demo-col">
       <span class="demo-label">Dropdown Menu</span>
-      <div class="dropdown">
-        <button class="btn btn-ghost btn-sm" onclick="this.nextElementSibling.classList.toggle('open')">Actions &#9662;</button>
-        <div class="dropdown-menu">
-          <button class="dropdown-item active">Edit</button>
-          <button class="dropdown-item">Duplicate</button>
-          <button class="dropdown-item">Archive</button>
-          <button class="dropdown-item" style="color:var(--color-error);">Delete</button>
+      <div class="row-list" style="overflow:visible;">
+        <div class="row">
+          <span class="row-icon"><i data-lucide="file-text" width="20" height="20"></i></span>
+          <div class="row-body">
+            <div class="row-title">회의록_최종.pdf</div>
+            <div class="row-meta">2.4 MB · 다운로드 3회</div>
+          </div>
+          <div class="dropdown">
+            <button type="button" class="btn-icon" aria-label="더보기" title="더보기" aria-haspopup="menu" aria-expanded="false" onclick="toggleDropdown(this)"><i data-lucide="ellipsis-vertical" width="16" height="16"></i></button>
+            <div class="dropdown-menu" role="menu">
+              <button type="button" class="dropdown-item" role="menuitem" onclick="copyFromMenu(this, 'https://share.lemondouble.com/s/Xk29fQa')"><i data-lucide="copy" width="16" height="16" class="icon-idle"></i><i data-lucide="check" width="16" height="16" class="icon-done"></i><span>링크 복사</span></button>
+              <button type="button" class="dropdown-item" role="menuitem" onclick="closeDropdowns()"><i data-lucide="qr-code" width="16" height="16"></i>QR 코드</button>
+              <button type="button" class="dropdown-item" role="menuitem" onclick="closeDropdowns()"><i data-lucide="chart-no-axes-column" width="16" height="16"></i>다운로드 기록</button>
+              <div class="dropdown-separator" role="separator"></div>
+              <button type="button" class="dropdown-item destructive" role="menuitem" onclick="closeDropdowns()"><i data-lucide="trash-2" width="16" height="16"></i>삭제</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2151,6 +2569,76 @@
   <div style="max-width:560px;">
     <label style="font-size:14px;font-weight:600;color:var(--color-fg);display:block;margin-bottom:8px;">피드백</label>
     <textarea class="textarea" placeholder="의견이나 제안 사항을 자유롭게 작성해주세요..."></textarea>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- STEPPER -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-label">Form</div>
+    <div class="section-title galmuri">Stepper</div>
+  </div>
+  <div class="demo-row">
+    <div class="demo-col">
+      <span class="demo-label">만료 기간 · 1~90일 (90을 넘겨 보세요)</span>
+      <div class="stepper" data-label="만료 기간" data-min="1" data-max="90" data-step="1" data-limit-message="만료 기간은 최대 90일입니다.">
+        <button type="button" class="stepper-button" data-delta="-1" aria-label="만료 기간 줄이기"><i data-lucide="minus" width="18" height="18"></i></button>
+        <label class="stepper-value"><input inputmode="numeric" aria-label="만료 기간" value="88"><span class="stepper-unit">일</span></label>
+        <button type="button" class="stepper-button" data-delta="1" aria-label="만료 기간 늘리기"><i data-lucide="plus" width="18" height="18"></i></button>
+      </div>
+    </div>
+    <div class="demo-col">
+      <span class="demo-label">다운로드 제한 · 빈 값 허용</span>
+      <div class="stepper" data-label="다운로드 제한" data-min="1" data-step="1" data-allow-empty>
+        <button type="button" class="stepper-button" data-delta="-1" aria-label="다운로드 제한 줄이기"><i data-lucide="minus" width="18" height="18"></i></button>
+        <label class="stepper-value"><input inputmode="numeric" aria-label="다운로드 제한" placeholder="제한 없음" value=""><span class="stepper-unit">회</span></label>
+        <button type="button" class="stepper-button" data-delta="1" aria-label="다운로드 제한 늘리기"><i data-lucide="plus" width="18" height="18"></i></button>
+      </div>
+    </div>
+    <div class="demo-col">
+      <span class="demo-label">대기 시간 · 5분씩</span>
+      <div class="stepper" data-label="대기 시간" data-min="0" data-max="999" data-step="5" data-limit-message="대기 시간은 최대 999분입니다.">
+        <button type="button" class="stepper-button" data-delta="-5" aria-label="대기 시간 5분 줄이기">−5</button>
+        <label class="stepper-value"><input inputmode="numeric" aria-label="대기 시간" value="15"><span class="stepper-unit">분</span></label>
+        <button type="button" class="stepper-button" data-delta="5" aria-label="대기 시간 5분 늘리기">+5</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- COPY FIELD -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-label">Form</div>
+    <div class="section-title galmuri">Copy Field</div>
+  </div>
+  <div class="demo-row">
+    <div class="demo-col">
+      <span class="demo-label">강조형 · 복사가 주 동작일 때</span>
+      <div class="copy-value">https://share.lemondouble.com/s/Xk29fQa</div>
+      <div class="copy-actions">
+        <button type="button" class="btn btn-ghost"><i data-lucide="qr-code" width="16" height="16"></i>QR 코드</button>
+        <button type="button" class="btn btn-primary" onclick="copyWithButton(this, 'https://share.lemondouble.com/s/Xk29fQa')"><i data-lucide="copy" width="16" height="16" class="icon-idle"></i><i data-lucide="check" width="16" height="16" class="icon-done"></i><span>링크 복사</span></button>
+      </div>
+    </div>
+    <div class="demo-col">
+      <span class="field-label">로그인 토큰</span>
+      <div class="copy-inline">
+        <span class="copy-inline-value">a91f3c7e0b2d48e6c55d0f7a1e9b2c4d</span>
+        <button type="button" class="btn-icon" aria-label="로그인 토큰 복사" title="복사" onclick="copyWithIcon(this, 'a91f3c7e0b2d48e6c55d0f7a1e9b2c4d')"><i data-lucide="copy" width="16" height="16" class="icon-idle"></i><i data-lucide="check" width="16" height="16" class="icon-done"></i></button>
+      </div>
+      <div class="callout callout-success" style="margin-top:16px;display:block;">
+        <p style="display:flex;align-items:center;gap:12px;margin-bottom:12px;"><span class="callout-icon" style="margin-top:0;"><i data-lucide="circle-check" width="20" height="20"></i></span>로그인 토큰을 만들었습니다.</p>
+        <div class="copy-inline">
+          <span class="copy-inline-value">5d0f7a1e9b2c4da91f3c7e0b2d48e6c5</span>
+          <button type="button" class="btn-icon" aria-label="로그인 토큰 복사" title="복사" onclick="copyWithIcon(this, '5d0f7a1e9b2c4da91f3c7e0b2d48e6c5')"><i data-lucide="copy" width="16" height="16" class="icon-idle"></i><i data-lucide="check" width="16" height="16" class="icon-done"></i></button>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -2221,27 +2709,13 @@
     <div class="section-title galmuri">Toast / Notification</div>
   </div>
   <div class="toast-container">
-    <div class="toast toast--success">
-      <div class="toast-icon">&#10003;</div>
-      <span class="toast-message">배포가 성공적으로 완료되었습니다.</span>
-      <button class="toast-dismiss">&#10005;</button>
-    </div>
-    <div class="toast toast--warning">
-      <div class="toast-icon">!</div>
-      <span class="toast-message">빌드 캐시가 만료되었습니다. 다음 배포 시 시간이 더 걸릴 수 있습니다.</span>
-      <button class="toast-dismiss">&#10005;</button>
-    </div>
-    <div class="toast toast--error">
-      <div class="toast-icon">&#10005;</div>
-      <span class="toast-message">환경 변수 설정 중 오류가 발생했습니다.</span>
-      <button class="toast-dismiss">&#10005;</button>
-    </div>
-    <div class="toast toast--info">
-      <div class="toast-icon">i</div>
-      <span class="toast-message">새로운 버전 v2.4.0이 출시되었습니다. 변경 사항을 확인해 보세요.</span>
-      <button class="toast-dismiss">&#10005;</button>
-    </div>
+    <div class="toast toast--success"><span class="toast-icon"><i data-lucide="check" width="12" height="12"></i></span>링크를 복사했습니다.</div>
+    <div class="toast toast--warning"><span class="toast-icon"><i data-lucide="triangle-alert" width="12" height="12"></i></span>만료 기간은 최대 90일입니다.</div>
+    <div class="toast toast--error"><span class="toast-icon"><i data-lucide="x" width="12" height="12"></i></span>업로드에 실패했습니다.</div>
+    <div class="toast toast--info"><span class="toast-icon"><i data-lucide="info" width="12" height="12"></i></span>새 버전 v2.4.0이 출시되었습니다.</div>
   </div>
+  <button type="button" class="btn btn-ghost" style="margin-top:16px;" onclick="showToast('warning', '만료 기간은 최대 90일입니다.')">토스트 띄우기</button>
+  <p style="font-size:13px;color:var(--color-fg-muted);margin-top:8px;">화면 하단 가운데에 2.5초 동안 나타납니다.</p>
 </section>
 
 <hr class="divider">
@@ -2466,21 +2940,83 @@
 
 <hr class="divider">
 
-<!-- ICON BADGE -->
+<!-- FILE DROP ZONE -->
 <section class="section">
   <div class="section-header">
-    <div class="section-label">State</div>
-    <div class="section-title galmuri">Icon Badge</div>
+    <div class="section-label">Form</div>
+    <div class="section-title galmuri">File Drop Zone</div>
   </div>
-  <div class="status-page">
-    <div class="icon-badge"><i data-lucide="file-x" width="32" height="32" stroke-width="1.5"></i></div>
-    <div class="status-page-code">404</div>
-    <h3>페이지를 찾을 수 없습니다</h3>
-    <p>주소가 바뀌었거나, 이미 삭제되었을 수 있습니다.</p>
+  <div class="demo-row">
+    <div class="demo-col">
+      <span class="demo-label">폼 칸형 · 파일을 끌어다 놓거나 눌러 보세요</span>
+      <input type="file" id="demoFileInput" hidden>
+      <button type="button" class="drop-zone" id="demoDropZone">
+        <span class="drop-zone-icon"><i data-lucide="upload" width="24" height="24"></i></span>
+        <span><span class="drop-zone-title" style="display:block;">파일을 끌어다 놓거나 눌러서 선택</span><span class="drop-zone-desc" style="display:block;">크기 제한 없음</span></span>
+      </button>
+      <div class="file-card" id="demoFileCard" hidden>
+        <span class="file-card-thumb"><i data-lucide="file-text" width="22" height="22"></i></span>
+        <div class="file-card-body">
+          <div class="row-title" id="demoFileName"></div>
+          <div class="row-meta" id="demoFileMeta"></div>
+        </div>
+        <button type="button" class="btn-icon" aria-label="파일 제거" title="파일 제거" onclick="clearDemoFile()"><i data-lucide="x" width="16" height="16"></i></button>
+      </div>
+    </div>
+    <div class="demo-col">
+      <span class="demo-label">페이지형 · 업로드가 주 동작일 때</span>
+      <div class="drop-zone page">
+        <span class="drop-zone-icon"><i data-lucide="image-up" width="24" height="24"></i></span>
+        <span class="drop-zone-title">번역할 만화 이미지를 올려 주세요</span>
+        <span class="drop-zone-desc">이미지를 끌어다 놓거나 Ctrl+V로 붙여넣을 수도 있어요</span>
+        <button type="button" class="btn btn-primary" style="margin-top:4px;"><i data-lucide="upload" width="16" height="16"></i>이미지 선택</button>
+      </div>
+    </div>
   </div>
 </section>
 
 <hr class="divider">
+
+<!-- ICON BADGE & NOTICE PAGE -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-label">State</div>
+    <div class="section-title galmuri">Notice Page</div>
+  </div>
+  <div class="demo-row">
+    <div class="demo-col">
+      <span class="demo-label">동작이 돌아가기뿐일 때</span>
+      <div class="notice-page">
+        <div class="icon-badge"><i data-lucide="file-x" width="32" height="32" stroke-width="1.5"></i></div>
+        <div class="notice-page-code">404</div>
+        <h3>찾을 수 없는 페이지</h3>
+        <p>주소가 바뀌었거나, 이미 삭제되었을 수 있습니다.</p>
+        <div class="notice-page-actions">
+          <a href="#" class="text-link"><i data-lucide="arrow-left" width="16" height="16"></i>홈으로</a>
+        </div>
+      </div>
+    </div>
+    <div class="demo-col">
+      <span class="demo-label">해결할 동작이 있을 때</span>
+      <div class="notice-page">
+        <div class="icon-badge"><i data-lucide="lock" width="32" height="32" stroke-width="1.5"></i></div>
+        <h3>접근 권한이 필요합니다</h3>
+        <p><strong>레몬</strong>님, 로그인은 완료되었지만 아직 접근 승인이 없습니다. 관리자에게 승인을 요청한 뒤 아래 버튼을 눌러 주세요.</p>
+        <div class="notice-page-actions">
+          <button type="button" class="btn btn-primary">승인 확인</button>
+          <div class="notice-page-links">
+            <a href="#" class="text-link">프로필 수정</a>
+            <a href="#" class="text-link">로그아웃</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<div class="toast-region" role="status" id="toastRegion"></div>
 
 <!-- FOOTER -->
 <footer class="footer">
@@ -2512,11 +3048,147 @@
   // Lucide icons
   if (window.lucide) lucide.createIcons();
 
-  // Close dropdown on outside click
+  // Dropdown Menu
+  function closeDropdowns() {
+    document.querySelectorAll('.dropdown-menu.open').forEach(menu => {
+      menu.classList.remove('open');
+      menu.previousElementSibling.setAttribute('aria-expanded', 'false');
+    });
+  }
+  function toggleDropdown(trigger) {
+    const menu = trigger.nextElementSibling;
+    const willOpen = !menu.classList.contains('open');
+    closeDropdowns();
+    menu.classList.toggle('open', willOpen);
+    trigger.setAttribute('aria-expanded', willOpen);
+  }
   document.addEventListener('click', (e) => {
-    if (!e.target.closest('.dropdown')) {
-      document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('open'));
+    if (!e.target.closest('.dropdown')) closeDropdowns();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeDropdowns();
+  });
+
+  // Copy
+  function flashCopied(element, label, text, duration, onDone) {
+    element.classList.add('done');
+    if (label) label.textContent = '복사됨';
+    setTimeout(() => {
+      element.classList.remove('done');
+      if (label) label.textContent = text;
+      if (onDone) onDone();
+    }, duration);
+  }
+  async function copyText(value) {
+    try {
+      await navigator.clipboard.writeText(value);
+      return true;
+    } catch {
+      return false;
     }
+  }
+  async function copyFromMenu(item, value) {
+    if (!(await copyText(value))) return closeDropdowns();
+    flashCopied(item, item.querySelector('span'), '링크 복사', 800, closeDropdowns);
+  }
+  async function copyWithButton(button, value) {
+    if (await copyText(value)) flashCopied(button, button.querySelector('span'), '링크 복사', 1500);
+  }
+  async function copyWithIcon(button, value) {
+    if (await copyText(value)) flashCopied(button, null, null, 1500);
+  }
+
+  // Toast
+  let toastTimer;
+  function showToast(state, message) {
+    const icons = { info: 'info', success: 'check', warning: 'triangle-alert', error: 'x' };
+    const region = document.getElementById('toastRegion');
+    region.innerHTML = `<div class="toast toast--${state}"><span class="toast-icon"><i data-lucide="${icons[state]}" width="12" height="12"></i></span></div>`;
+    region.querySelector('.toast').append(message);
+    lucide.createIcons();
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { region.innerHTML = ''; }, 2500);
+  }
+
+  // Segmented Control
+  document.querySelectorAll('.segmented').forEach(group => {
+    group.addEventListener('click', (e) => {
+      const item = e.target.closest('.segmented-item');
+      if (!item) return;
+      group.querySelectorAll('.segmented-item').forEach(other => other.setAttribute('aria-checked', other === item));
+    });
+  });
+
+  // Stepper
+  document.querySelectorAll('.stepper').forEach(stepper => {
+    const input = stepper.querySelector('input');
+    const min = Number(stepper.dataset.min);
+    const max = stepper.dataset.max === undefined ? Infinity : Number(stepper.dataset.max);
+    const allowEmpty = stepper.hasAttribute('data-allow-empty');
+
+    function commit(next) {
+      if (next > max) {
+        showToast('warning', stepper.dataset.limitMessage);
+        input.value = max;
+      } else if (next < min) {
+        input.value = allowEmpty ? '' : min;
+      } else {
+        input.value = next;
+      }
+    }
+
+    stepper.querySelectorAll('.stepper-button').forEach(button => {
+      button.addEventListener('click', () => {
+        const delta = Number(button.dataset.delta);
+        if (input.value === '') return delta > 0 && commit(min);
+        commit(Number(input.value) + delta);
+      });
+    });
+    input.addEventListener('input', () => { input.value = input.value.replace(/\D/g, ''); });
+    input.addEventListener('blur', () => {
+      if (input.value === '') return allowEmpty || commit(min);
+      commit(Number(input.value));
+    });
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') input.blur(); });
+  });
+
+  // File Drop Zone
+  const demoDropZone = document.getElementById('demoDropZone');
+  const demoFileInput = document.getElementById('demoFileInput');
+  const demoFileCard = document.getElementById('demoFileCard');
+  const demoDropTitle = demoDropZone.querySelector('.drop-zone-title');
+
+  function formatBytes(bytes) {
+    if (bytes < 1024 * 1024) return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+    return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+  }
+  function showDemoFile(file) {
+    const extension = file.name.includes('.') ? file.name.split('.').pop().toUpperCase() : '파일';
+    document.getElementById('demoFileName').textContent = file.name;
+    document.getElementById('demoFileMeta').textContent = `${formatBytes(file.size)} · ${extension}`;
+    demoDropZone.hidden = true;
+    demoFileCard.hidden = false;
+  }
+  function clearDemoFile() {
+    demoFileCard.hidden = true;
+    demoDropZone.hidden = false;
+  }
+  function setDragging(isDragging) {
+    demoDropZone.classList.toggle('dragging', isDragging);
+    demoDropTitle.textContent = isDragging ? '여기에 놓으세요' : '파일을 끌어다 놓거나 눌러서 선택';
+  }
+
+  demoDropZone.addEventListener('click', () => demoFileInput.click());
+  demoFileInput.addEventListener('change', () => {
+    if (demoFileInput.files[0]) showDemoFile(demoFileInput.files[0]);
+    demoFileInput.value = '';
+  });
+  demoDropZone.addEventListener('dragover', (e) => { e.preventDefault(); setDragging(true); });
+  demoDropZone.addEventListener('dragleave', () => setDragging(false));
+  demoDropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    setDragging(false);
+    if (e.dataTransfer.files[0]) showDemoFile(e.dataTransfer.files[0]);
   });
 
   // Page Jump input

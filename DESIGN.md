@@ -200,7 +200,7 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 - **Success** `--color-success`: 정상, 활성, 완료 상태.
 - **Warning** `--color-warning`: 경고, 진행 중 상태.
 - **Error** `--color-error`: 에러, 삭제, 위험 상태. Danger 버튼의 호버는 `--color-error-hover`.
-- 상태마다 틴트 토큰 세 가지를 둔다: `-subtle`(Toast처럼 넓은 영역의 배경), `-dim`(배지, 아이콘 배경), `-dim-border`(테두리).
+- 상태마다 틴트 토큰 세 가지를 둔다: `-subtle`(Callout처럼 넓은 영역의 배경), `-dim`(배지, 아이콘 배경), `-dim-border`(테두리).
 - 상태는 색만으로 전달하지 않는다. 아이콘, 텍스트 레이블, 툴팁 중 하나를 항상 함께 둔다([WCAG 1.4.1](https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html)). 액센트가 따뜻한 색에 몰려 있어 Warning은 Primary와, Error는 Secondary와 색만으로는 구분이 어렵기 때문이다.
 
 ### Disabled State
@@ -337,6 +337,38 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 - Text: `var(--color-fg)`
 - Placeholder: `var(--color-fg-muted)`
 - Focus: border-color `var(--color-focus-ring)`
+- 카드, 모달처럼 `var(--color-surface)` 위에 놓일 때는 background를 `var(--color-bg)`로 바꾼다. 배경색이 같으면 1px 테두리만 남아 입력칸이 묻힌다. Select, Textarea와 아래의 Segmented Control, Stepper, Copy Field, Row List에도 같은 규칙을 적용한다.
+
+### Segmented Control
+- 폼 값이나 설정 하나를 여러 선택지 중에서 고른다. 아래 내용(화면)을 바꾸는 데는 Tabs를 쓴다.
+- 선택지는 한 줄에 들어가는 2~5개까지 쓴다. 그보다 많으면 Select를 쓴다.
+- Markup: 컨테이너 `role="radiogroup"`, 항목 `<button type="button" role="radio" aria-checked="true|false">`
+- Container: background `var(--color-surface)`, border 1px solid `var(--color-border)`, radius `var(--radius-lg)`, padding 4px, gap 4px. 항목은 같은 너비로 나눈다.
+- Item: Pretendard 13px weight 600, padding 8px 0, radius `var(--radius-md)`, color `var(--color-fg-secondary)`. Hover: color `var(--color-fg)`
+- Selected: background `var(--color-primary-dim)`, color `var(--color-primary)`
+- Small: 목록 행, 툴바처럼 좁은 자리에 쓴다. 내용 너비만큼만 차지하고, padding 3px, gap 2px, Item 12px, padding 4px 12px, radius `var(--radius-sm)`
+
+### Stepper
+- 정해진 범위의 정수(일수, 횟수, 분)를 −/+ 버튼으로 조절한다.
+- Container: background `var(--color-surface)`, border 1px solid `var(--color-border)`, radius `var(--radius-lg)`, padding 6px. 왼쪽부터 [−] 값 [+]를 둔다.
+- Button: 40x40px, radius `var(--radius-md)`, color `var(--color-fg-secondary)`, hover background `var(--color-surface-hover)`. 한 번에 1씩 바뀌면 Lucide `minus`·`plus` 18px, 그보다 크게 바뀌면 "−5", "+5"처럼 바뀌는 양을 Pretendard 14px weight 600으로 적는다.
+- 버튼에는 "만료 기간 줄이기"처럼 `aria-label`을 준다.
+- Value: Pretendard 18px weight 700 `var(--color-fg)` + 단위 14px `var(--color-fg-secondary)`. 직접 입력할 수 있다(`inputmode="numeric"`, 숫자 외 문자 제거, Enter나 blur로 확정).
+- 범위를 넘기려 하면 최솟값·최댓값으로 보정하고 Warning Toast로 이유를 알린다 ("만료 기간은 최대 90일입니다."). 범위를 입력칸 옆에 미리 적어 두지 않는다.
+- 빈 값 허용: "제한 없음"처럼 값이 없는 상태가 있으면, 최솟값에서 한 번 더 줄일 때 값을 비우고 그 상태를 placeholder(Pretendard 16px weight 600 `var(--color-fg-secondary)`)로 보여 준다.
+
+### Copy Field
+- 링크, 토큰처럼 사용자가 복사해 가는 값을 보여 준다.
+- 강조형: 복사가 그 화면의 주 동작일 때 쓴다.
+  - Value box: background `var(--color-bg)`, border 1px solid `var(--color-border)`, radius `var(--radius-lg)`, padding 12px 16px, JetBrains Mono 13px, `word-break: break-all`로 값을 전부 보여 준다.
+  - 그 아래 margin-top 12px, 오른쪽 정렬로 Primary 복사 버튼(Lucide `copy` 16px + "링크 복사")을 둔다. 함께 쓰는 동작(QR 코드 등)은 왼쪽에 Ghost로 둔다. 모바일에서는 버튼을 같은 너비로 나눈다.
+- 인라인형: 여러 정보 중 하나일 때 쓴다.
+  - Box: background `var(--color-bg)`, border 1px solid `var(--color-border)`, radius `var(--radius-lg)`, padding 4px 4px 4px 16px
+  - 값은 JetBrains Mono 13px 한 줄로 두고 넘치면 말줄임한다. 오른쪽 끝에 Icon Button(Lucide `copy` 16px)을 둔다.
+  - 값의 이름("로그인 토큰")은 상자 안이 아니라 위쪽 Label로 둔다.
+  - 새로 만든 값을 알릴 때는 Success callout 안에 넣는다. 별도 색 상자를 만들지 않는다.
+- 복사 후: 1.5초 동안 아이콘을 `check`로 바꾼다. 강조형은 버튼 문구를 "복사됨"으로, 인라인형은 아이콘 색을 `var(--color-success)`로 바꾼다.
+- 클립보드 권한이 없어 복사에 실패하면 직접 복사할 수 있도록, 값에 `user-select: all`을 줘서 한 번 누르면 전체가 선택되게 한다.
 
 ### Code Block
 - Container: background `var(--color-surface)`, border 1px solid `var(--color-border)`, radius `var(--radius-xl)`
@@ -360,7 +392,7 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 - Font: Pretendard 14px, line-height 1.6
 - Primary callout: background `var(--color-primary-dim)`, border `var(--color-primary-dim-border)`
 - Secondary callout: background `var(--color-secondary-dim)`, border `var(--color-secondary-dim-border)`
-- 상태 callout (Info, Success, Warning, Error): background `var(--color-{상태}-subtle)`, border `var(--color-{상태}-dim-border)`. Toast와 같은 색 조합이다.
+- 상태 callout (Info, Success, Warning, Error): background `var(--color-{상태}-subtle)`, border `var(--color-{상태}-dim-border)`
 - Text: `var(--color-fg)`
 - Icon: Lucide 20px, 텍스트 왼쪽, gap 12px. Primary·Secondary는 내용에 맞는 아이콘을 액센트 색으로, 상태 callout은 상태 색으로 Info `info`, Success `circle-check`, Warning `triangle-alert`, Error `circle-alert`를 쓴다.
 - Error callout에는 `role="alert"`를 줘서 스크린 리더가 바로 읽게 한다.
@@ -374,8 +406,12 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 - Logo text: Galmuri11 Bold 16px, color `var(--color-primary)`
 - Links: Pretendard 14px weight 500, color `var(--color-fg-secondary)`
 - Active link: color `var(--color-primary)`, background `var(--color-primary-dim)`
-- CTA: Small Primary button
-- Mobile (< 640px): 링크와 CTA를 숨기고 햄버거 버튼(Lucide `menu` 24px, 40x40, `aria-expanded`)을 둔다. 누르면 네비게이션 아래로 링크와 CTA를 세로로 펼치고 아이콘을 `x`로 바꾼다. 좌우 padding은 20px.
+- CTA: Small Primary button. 링크 묶음 오른쪽에 margin-left 8px을 두고 놓는다.
+- 아이콘 동작(알림, 로그아웃 등): CTA 오른쪽에 세로 구분선(1px x 20px, `var(--color-border)`, 좌우 margin 12px)을 두고, 그 오른쪽에 Icon Button(24px 아이콘)으로 묶는다. 텍스트 링크 사이에 섞지 않는다.
+- Mobile (< 640px): 링크와 CTA를 숨기고 햄버거 버튼(Lucide `menu` 24px, 40x40, `aria-expanded`)을 둔다. 누르면 네비게이션 아래로 메뉴를 세로로 펼치고 아이콘을 `x`로 바꾼다. 좌우 padding은 20px.
+  - 알림처럼 자주 쓰는 아이콘 동작은 메뉴에 넣지 않고 상단 바의 햄버거 버튼 왼쪽에 남긴다.
+  - CTA는 버튼 모양을 버리고 메뉴 맨 위의 일반 항목으로 둔다. 메뉴 항목은 모두 같은 모양(min-height 40px, padding 0 14px, radius `var(--radius-md)`)이다.
+  - 로그아웃처럼 아이콘만으로는 뜻이 약한 동작은 메뉴 맨 아래 텍스트 항목으로 둔다.
 
 ### Table
 - Container: border 1px solid `var(--color-border)`, radius `var(--radius-xl)`, overflow hidden
@@ -384,6 +420,19 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 - td: Pretendard 14px, color `var(--color-fg)`, padding 12px 16px
 - Row divider: border-bottom 1px solid `var(--color-border)` (마지막 행 제외)
 - Row hover: background `var(--color-surface)`
+
+### Row List
+- 파일, 사용자, 설정처럼 같은 구조의 항목을 세로로 나열한다. 열 이름이 필요한 데이터 비교에는 Table을 쓴다.
+- Container: Card와 같다. background `var(--color-surface)`, border 1px solid `var(--color-border)`, radius `var(--radius-xl)`, overflow hidden. 행 사이에 border-top 1px solid `var(--color-border)`
+- Row: flex, align center, gap 12px, padding 16px 20px (모바일 16px). 왼쪽부터 세 칸을 둔다.
+  - 앞 요소: 40px 아이콘 상자(radius `var(--radius-lg)`, background `var(--color-primary-dim)`, Lucide 20px `var(--color-primary)`), 32px 아바타, 16px 아이콘(`var(--color-fg-muted)`) 중 하나
+  - 본문: 제목 Pretendard 14px weight 600 `var(--color-fg)`, 넘치면 말줄임. 부가 정보는 그 아래 12px `var(--color-fg-muted)`이고, 여러 정보는 ` · `로 잇는다. 별명 같은 강조 레이블은 제목 위에 12px weight 600 `var(--color-primary)`로 둔다.
+  - 뒤 요소: 상태 텍스트(12px `var(--color-fg-secondary)`), Tag, Dropdown Menu 버튼, `chevron-right` 16px 중 필요한 것
+- Compact: 관리자 목록처럼 행이 많을 때 Row padding 10px 16px
+- 누를 수 있는 행: 행 전체를 링크나 버튼으로 만들고 hover background `var(--color-surface-hover)`. 행 안의 메뉴를 눌러도 행 링크로 이동하지 않게 한다.
+- 머리글(선택): 맨 위에 안내 줄(Pretendard 12px `var(--color-fg-muted)`, padding 8px 16px, border-bottom)을 둔다. 검색 결과처럼 개수나 할 일을 알려 줄 때 쓴다.
+- 최대 높이(선택): 목록이 길어질 수 있으면 행 부분에만 max-height를 주고 안에서 스크롤한다. 머리글은 고정한다.
+- 상태가 끝난 항목(만료 등)은 아이콘 상자를 `var(--color-border)` 배경과 `var(--color-fg-muted)` 아이콘으로, 제목을 `var(--color-fg-muted)`로 낮춘다.
 
 ### Toggle
 - Markup: `<button type="button" role="switch" aria-checked="true|false">`
@@ -442,10 +491,16 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 - Item hover: background `var(--color-surface-hover)`, color `var(--color-fg)`
 - Active item: color `var(--color-primary)`
 - Destructive item: color `var(--color-error)`
+- Trigger: Icon Button + Lucide `ellipsis-vertical` 16px. `aria-haspopup="menu"`, `aria-expanded`를 준다.
+- Position: 트리거 아래 4px, 오른쪽 정렬, width 176px, z-index `var(--z-dropdown)`. 메뉴는 `role="menu"`, 항목은 `role="menuitem"`
+- Item icon: Lucide 16px, 글자 왼쪽, gap 10px. 아이콘을 쓰면 모든 항목에 둔다. 기본 color `var(--color-fg-secondary)`
+- Separator: height 1px, background `var(--color-border)`, margin 4px 0. 삭제처럼 위험한 항목은 구분선 아래 맨 끝에 둔다.
+- 닫기: 항목을 고를 때, 메뉴 바깥을 누를 때, ESC를 누를 때 닫는다.
+- 복사 항목: 누르면 아이콘을 `check`로, 문구를 "복사됨"으로, 색을 `var(--color-success)`로 0.8초 동안 바꾼 뒤 메뉴를 닫는다.
 
 ### Select (Native)
 - appearance: none
-- Background: `var(--color-surface)`, border 1px solid `var(--color-border)`, radius `var(--radius-lg)`
+- Background: `var(--color-surface)`, border 1px solid `var(--color-border)`, radius `var(--radius-lg)`. `var(--color-surface)` 위에서는 Inputs처럼 `var(--color-bg)`
 - Padding: 10px 40px 10px 16px (우측에 화살표 공간)
 - Font: Pretendard 14px
 - Focus: border-color `var(--color-focus-ring)`
@@ -463,7 +518,7 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 - Focus: 전역 포커스 링
 
 ### Textarea
-- 기본 Input과 동일한 스타일
+- 기본 Input과 동일한 스타일 (`var(--color-surface)` 위의 배경 규칙 포함)
 - min-height: 100px
 - resize: vertical
 - line-height: 1.6
@@ -490,13 +545,14 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 - Actions: margin-top 24px, 우측 정렬, gap 8px. Ghost "취소" + Danger 버튼(Lucide `trash-2` 16px + 동작 이름). 처리 중에는 아이콘 자리에 Spinner sm을 둔다.
 
 ### Toast / Notification
-- Container: padding 12px 16px, radius `var(--radius-lg)`, border 1px solid
-- Icon: 20px circle, 배경 틴트 + 아이콘 색상
-- Message: Pretendard 14px, color `var(--color-fg)`
-- Info: border `var(--color-info-dim-border)`, background `var(--color-info-subtle)`
-- Success: border `var(--color-success-dim-border)`, background `var(--color-success-subtle)`
-- Warning: border `var(--color-warning-dim-border)`, background `var(--color-warning-subtle)`
-- Error: border `var(--color-error-dim-border)`, background `var(--color-error-subtle)`
+- Container: padding 12px 16px, radius `var(--radius-lg)`, border 1px solid `var(--color-{상태})`
+- Background: 화면 위에 떠서 뒤의 내용이 비치지 않도록, 불투명한 surface 위에 dim 틴트를 겹친다. `background: linear-gradient(var(--color-{상태}-dim), var(--color-{상태}-dim)), var(--color-surface);`
+- Icon: 20px circle, background `var(--color-{상태}-dim)`, Lucide 12px `var(--color-{상태})`. Info `info`, Success `check`, Warning `triangle-alert`, Error `x`
+- Message: Pretendard 14px weight 600, color `var(--color-fg)`
+- 상태: Info, Success, Warning, Error. `{상태}` 자리에 `info`, `success`, `warning`, `error`를 넣는다.
+- Position: 화면 하단 가운데, bottom 24px, 좌우 여백 16px, z-index `var(--z-toast)`
+- Duration: 2.5초 뒤 사라진다. 새 메시지가 오면 앞의 메시지를 바로 바꾼다.
+- 스크린 리더: `role="status"` 영역을 미리 두고 그 안에 메시지를 넣는다. 영역을 메시지와 함께 새로 만들면 읽히지 않는다.
 
 ### Tooltip
 - Background: `var(--color-fg)`, color `var(--color-bg)`
@@ -564,12 +620,37 @@ LemonDouble Design System은 개인 프로젝트 전반에 일관된 브랜드 �
 - Description: Pretendard 14px, color `var(--color-fg-muted)`
 - CTA: Primary button
 
+### File Drop Zone
+- 파일을 끌어다 놓거나 눌러서 고르는 영역이다.
+- Container: border 2px dashed `var(--color-border)`, radius `var(--radius-xl)`, 내용 가운데 정렬. Empty State(1px)보다 두껍게 해서 놓을 수 있는 자리임을 드러낸다. Hover: border-color `var(--color-border-hover)`
+- Icon: 48px 상자, radius `var(--radius-xl)`, background `var(--color-primary-dim)`, Lucide `upload` 24px `var(--color-primary)`
+- 끌어다 놓는 중: border-color `var(--color-primary)`, background `var(--color-primary-dim)`, 제목을 "여기에 놓으세요"로 바꾼다.
+- 폼 칸형: 폼의 한 칸일 때 쓴다.
+  - 영역 전체가 버튼이고 안에 버튼을 따로 두지 않는다. 폼 제출 버튼과 Primary가 겹치지 않게 하기 위함이다.
+  - padding 56px 24px, gap 12px. 제목 Pretendard 14px weight 600, 설명(크기 제한 등) 12px `var(--color-fg-muted)`
+  - 파일을 고른 뒤에는 영역을 파일 카드로 바꾼다: background `var(--color-surface)`, border 1px solid `var(--color-border)`, radius `var(--radius-xl)`, padding 16px. 44px 썸네일(이미지가 아니면 파일 형식 아이콘) + 이름 14px weight 600 + 크기·형식 12px `var(--color-fg-muted)` + 오른쪽 끝 제거 버튼(Lucide `x`). 카드를 누르면 다른 파일을 고른다.
+- 페이지형: 업로드가 그 화면의 주 동작일 때 쓴다.
+  - Empty State처럼 padding 64px 32px, 제목 Pretendard 17px weight 700, 설명 14px `var(--color-fg-muted)`, Primary 버튼을 둔다.
+  - 영역 밖이라도 화면 어디에 놓든 파일을 받는다.
+
 ### Icon Badge
-- 404, 권한 없음, 승인 대기처럼 화면 전체가 하나의 안내인 페이지의 맨 위에 둔다. 마스코트 이미지는 쓰지 않는다.
 - Size: 64x64px, radius `var(--radius-xl)`
 - Background `var(--color-primary-dim)`, border 1px solid `var(--color-primary-dim-border)`
 - Icon: Lucide 32px, stroke 1.5px, color `var(--color-primary)`
-- 아래로 margin 24px을 두고 제목(Galmuri11 Bold 28px, 모바일 22px)과 설명을 가운데 정렬한다.
+- 상황별 아이콘: 찾을 수 없음 `file-x`, 만료 `clock-alert`, 권한 없음 `lock`, 이미 사용됨·완료 `circle-check`
+
+### Notice Page (안내 화면)
+- 404, 만료, 권한 없음, 승인 대기처럼 화면 전체가 하나의 안내인 페이지다. 마스코트 이미지는 쓰지 않는다.
+- Layout: max-width 520px, 남은 화면 높이의 가운데에 모든 요소를 가운데 정렬한다. 위에서부터 아래 순서로 둔다.
+  - Icon Badge, margin-bottom 24px
+  - 상태 코드(선택): 404, 403, 500 같은 HTTP 오류일 때만 둔다. Galmuri11 Bold 12px, letter-spacing 1.5px, `var(--color-primary)`, margin-bottom 12px
+  - 제목: Galmuri11 Bold 28px (모바일 22px), margin-bottom 12px
+  - 설명: Pretendard 14px, line-height 1.6, `var(--color-fg-secondary)`. 한 문단으로 쓰고, 어떻게 해결하는지도 같은 문단에 적는다. 사용자 이름 같은 정보는 카드에 따로 넣지 않고 문장 안에 `<strong>`(`var(--color-fg)`)으로 넣는다.
+  - 동작: 설명 아래 margin-top 32px, 세로 gap 16px
+    - 해결할 동작(승인 확인 등)이 있으면 Primary 버튼, width 100%, max-width 320px. 동작이 실패하면 버튼 아래 12px `var(--color-error)`로 알린다.
+    - 돌아가기, 로그아웃, 프로필 수정 같은 보조 동작은 텍스트 링크(Pretendard 14px `var(--color-fg-secondary)`, hover `var(--color-fg)`). 여러 개면 가로로 gap 16px
+    - 해결할 동작이 없으면 Lucide `arrow-left` 16px + "홈으로" 텍스트 링크 하나만 둔다.
+- 업로드 완료처럼 아래에 내용이 이어지는 화면은 Icon Badge와 제목만 이 패턴으로 두고, 나머지는 일반 페이지로 구성한다.
 
 ## 6. Layout Principles
 
