@@ -59,7 +59,7 @@ export const ActionsOnly: Story = {
   name: "링크 없이 동작만",
   render: (args) => (
     <div className="h-40">
-      <AppNav {...args} name="만화 번역기" reloadOnHome actions={notificationButton} mobileActions={notificationButton} />
+      <AppNav {...args} name="만화 번역기" reloadOnHome actions={notificationButton} />
     </div>
   ),
 };

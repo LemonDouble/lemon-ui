@@ -86,7 +86,7 @@ export function AppNav({
   const [menuOpen, setMenuOpen] = useState(false);
   const closeMenu = () => setMenuOpen(false);
   const hasLinks = Children.toArray(children).length > 0 || cta !== undefined;
-  // 메뉴에 넣을 항목이 없으면 햄버거 버튼과 모바일 메뉴를 그리지 않는다
+  // 메뉴에 넣을 항목이 없으면 햄버거 버튼과 모바일 메뉴를 그리지 않고, actions를 모바일에서도 그대로 보여 준다
   const hasMobileMenu = hasLinks || mobileFooter !== undefined;
   const brand = (
     <>
@@ -110,7 +110,7 @@ export function AppNav({
         )}
 
         <NavContext.Provider value={{ placement: "desktop", closeMenu }}>
-          <nav className="hidden items-center gap-1 sm:flex">
+          <nav className={`items-center gap-1 ${hasMobileMenu ? "hidden sm:flex" : "flex"}`}>
             {children}
             {cta && (
               <LinkButton href={cta.href} size="sm" className="ml-2" aria-current={cta.active ? "page" : undefined}>
@@ -126,9 +126,9 @@ export function AppNav({
           </nav>
         </NavContext.Provider>
 
-        <div className="-mr-2 flex items-center sm:hidden">
-          {mobileActions}
-          {hasMobileMenu && (
+        {hasMobileMenu && (
+          <div className="-mr-2 flex items-center sm:hidden">
+            {mobileActions}
             <button
               type="button"
               onClick={() => setMenuOpen((open) => !open)}
@@ -139,8 +139,8 @@ export function AppNav({
             >
               {menuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* 메뉴 항목이 연 모달이 함께 사라지지 않도록, 닫을 때 언마운트하지 않고 숨기기만 한다 */}
