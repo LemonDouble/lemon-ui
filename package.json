@@ -4,7 +4,7 @@
   "description": "LemonDouble 디자인 시스템의 React 컴포넌트와 토큰",
   "repository": {
     "type": "git",
-    "url": "https://github.com/LemonDouble/lemon-ui"
+    "url": "git+https://github.com/LemonDouble/lemon-ui.git"
   },
   "homepage": "https://lemondouble.github.io/lemon-ui/",
   "type": "module",
