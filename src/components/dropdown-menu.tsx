@@ -16,7 +16,15 @@ function stopRowNavigation(e: React.MouseEvent) {
   e.stopPropagation();
 }
 
-export function DropdownMenu({ label, children }: { label: string; children: ReactNode }) {
+export function DropdownMenu({
+  label,
+  trigger = <EllipsisVertical size={16} />,
+  children,
+}: {
+  label: string;
+  trigger?: ReactNode;
+  children: ReactNode;
+}) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -46,7 +54,7 @@ export function DropdownMenu({ label, children }: { label: string; children: Rea
         aria-expanded={open}
         onClick={() => setOpen((wasOpen) => !wasOpen)}
       >
-        <EllipsisVertical size={16} />
+        {trigger}
       </IconButton>
 
       {open && (

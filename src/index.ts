@@ -1,4 +1,6 @@
+export { AccountMenu } from "./components/account-menu.js";
 export { AppNav, NavButton, NavLink, useNavItem } from "./components/app-nav.js";
+export { Avatar } from "./components/avatar.js";
 export { Button, LinkButton, TextLink, buttonClassName, type ButtonSize, type ButtonVariant } from "./components/button.js";
 export { Callout, type CalloutTone } from "./components/callout.js";
 export { Card } from "./components/card.js";
