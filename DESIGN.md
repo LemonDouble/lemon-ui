@@ -195,7 +195,7 @@ React 프로젝트는 아래 컴포넌트를 `@lemondouble/ui`에서 가져다 �
 | Stepper | `Stepper` |
 | Copy Field | `CopyField`(강조형), `CopyInline`(인라인형) |
 | Callout / Alert | `Callout` |
-| Navigation | `AppNav`, `NavLink`, `NavButton`, `AccountMenu` |
+| Navigation | `AppNav`, `NavLink`, `NavButton`, `AccountMenu`(데스크톱), `NavAccount`(모바일) |
 | Avatar | `Avatar` |
 | Row List | `RowList`, `Row`, `RowIcon` |
 | Toggle | `Switch` |
@@ -359,7 +359,8 @@ React 프로젝트는 아래 컴포넌트를 `@lemondouble/ui`에서 가져다 �
 - 아이콘 동작: CTA 오른쪽에 세로 구분선(1px x 20px, `var(--color-border)`, 좌우 margin 12px)을 두고, 그 오른쪽에 Icon Button(24px 아이콘)으로 묶는다. 텍스트 링크 사이에 섞지 않는다.
 - 계정 메뉴: 로그인하는 앱은 프로필 수정, 알림 설정, 로그아웃처럼 계정에 딸린 동작을 아이콘으로 늘어놓지 않고, 아이콘 동작의 맨 오른쪽에 둔 아바타(32px) 드롭다운 하나로 묶는다. 메뉴 맨 위에 이름(14px weight 500 `var(--color-fg)`, 넘치면 말줄임)과 구분선을 두고, 로그아웃은 구분선 아래 맨 끝에 둔다. 아바타만으로도 내 계정임을 알아볼 수 있고, 상단 바의 아이콘이 늘어나지 않는다.
 - Mobile (< 640px): 링크와 CTA를 숨기고 햄버거 버튼(Lucide `menu` 24px, 40x40, `aria-expanded`)을 둔다. 누르면 네비게이션 아래로 메뉴를 세로로 펼치고 아이콘을 `x`로 바꾼다. 좌우 padding은 20px.
-  - 계정 메뉴와 자주 쓰는 아이콘 동작은 햄버거 메뉴에 넣지 않고 상단 바의 햄버거 버튼 왼쪽에 남긴다.
+  - 알림처럼 자주 쓰는 아이콘 동작은 메뉴에 넣지 않고 상단 바의 햄버거 버튼 왼쪽에 남긴다.
+  - 계정 메뉴는 상단 바에 두지 않고 메뉴 맨 아래 계정 줄로 옮긴다. 구분선 아래에 아바타(32px)와 이름(14px weight 600), 그 아래 "프로필 수정"(12px `var(--color-fg-muted)`)을 두고, 이 부분을 누르면 프로필 수정으로 간다. 계정 동작은 줄 오른쪽에 Icon Button(20px 아이콘)으로 둔다. 상단 바에 메뉴 버튼이 둘(아바타, 햄버거) 생기지 않게 하고, 계정 영역이 한 줄로 끝나게 하려는 것이다.
   - CTA는 버튼 모양을 버리고 메뉴 맨 위의 일반 항목으로 둔다. 메뉴 항목은 모두 같은 모양(min-height 40px, padding 0 14px, radius `var(--radius-md)`)이다.
   - 계정 메뉴가 없는 앱에서 로그아웃처럼 아이콘만으로는 뜻이 약한 동작은 메뉴 맨 아래 텍스트 항목으로 둔다.
   - 링크가 없는 한 화면짜리 앱은 햄버거 버튼과 메뉴를 두지 않고, 동작 버튼을 모바일에서도 상단 바에 그대로 둔다. 링크가 없으면 데스크톱의 세로 구분선도 두지 않는다.
