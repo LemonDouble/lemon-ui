@@ -17,6 +17,7 @@ export {
 } from "./components/file-drop-zone.js";
 export { FieldError, HelpText, Input, Label, Select, Textarea } from "./components/form.js";
 export { IconButton, type IconButtonTone } from "./components/icon-button.js";
+export { LoginPage } from "./components/login-page.js";
 export { IconBadge, NoticeLinks, NoticePage } from "./components/notice-page.js";
 export { Progress } from "./components/progress.js";
 export { Row, RowIcon, RowList } from "./components/row-list.js";

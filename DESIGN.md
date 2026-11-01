@@ -210,6 +210,7 @@ React 프로젝트는 아래 컴포넌트를 `@lemondouble/ui`에서 가져다 �
 | Empty State | `EmptyState` |
 | File Drop Zone | `FileDropZone`(폼 칸형), `FileDropPanel`(페이지형) |
 | Icon Badge, Notice Page | `IconBadge`, `NoticePage`, `NoticeLinks` |
+| Login Page | `LoginPage` |
 
 ### Buttons
 
@@ -606,6 +607,21 @@ React 프로젝트는 아래 컴포넌트를 `@lemondouble/ui`에서 가져다 �
     - 돌아가기, 로그아웃, 프로필 수정 같은 보조 동작은 텍스트 링크(Pretendard 14px `var(--color-fg-secondary)`, hover `var(--color-fg)`). 여러 개면 가로로 gap 16px
     - 해결할 동작이 없으면 Lucide `arrow-left` 16px + "홈으로" 텍스트 링크 하나만 둔다.
 - 업로드 완료처럼 아래에 내용이 이어지는 화면은 Icon Badge와 제목만 이 패턴으로 두고, 나머지는 일반 페이지로 구성한다.
+
+### Login Page (로그인 화면)
+- 레몬 통합 계정(auth-server)으로 로그인하는 앱의 첫 화면이다. 로그인하지 않은 사용자에게 보여 주고, 로그인한 사용자는 앱 화면으로 바로 보낸다.
+- 앱마다 바뀌는 값은 로고, 이름(노란색으로 강조할 부분 포함), 소개 한 줄뿐이다. 나머지 구성은 모든 앱이 같아야 한다. 다른 레몬 앱과 같은 계정이라는 사실을 화면 모양으로 알리기 위함이다.
+- Layout: 화면 높이의 가운데에 모든 요소를 가운데 정렬한다. 위에서부터 아래 순서로 둔다.
+  - 앱 로고 120px
+  - 레이블: 레몬 로고 16px + "LEMON ACCOUNT", Section Label 스타일(Galmuri11 Bold 12px, letter-spacing 1.5px, `var(--color-primary)`), margin-top 32px. 통합 계정이라는 사실은 이 레이블로만 알린다.
+  - 제목: Hero Heading(Galmuri11 Bold 44px, 모바일 32px), margin-top 12px. 강조 부분은 `var(--color-primary)`
+  - 소개: Body Large(Pretendard 18px, line-height 1.7) `var(--color-fg-secondary)`, margin-top 16px
+  - 로그인 버튼: margin-top 40px, width 100%, max-width 360px
+- 로그인 버튼은 [Google 로그인 버튼 가이드](https://developers.google.com/identity/branding-guidelines)의 다크 테마 규격을 따른다. 컬러 G 로고는 가이드 규격대로만 쓸 수 있어서, 이 버튼만 토큰 대신 가이드의 값을 쓴다.
+  - Fill `#131314`, border 1px `#8E918F`, text `#E3E3E3`(Pretendard 15px weight 500), radius `var(--radius-full)`, height 48px
+  - 컬러 G 로고 20px + "Google 계정으로 로그인", gap 12px
+  - Hover: border `#E3E3E3`
+- 링크는 `<a href>`로 둔다. 로그인 경로는 페이지가 아니라 서버 라우트라서 클라이언트 라우팅을 쓰지 않는다.
 
 ## 6. Layout Principles
 
