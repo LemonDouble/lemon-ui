@@ -611,7 +611,7 @@ React 프로젝트는 아래 컴포넌트를 `@lemondouble/ui`에서 가져다 �
 ### Login Page (로그인 화면)
 - 레몬 통합 계정(auth-server)으로 로그인하는 앱의 첫 화면이다. 로그인하지 않은 사용자에게 보여 주고, 로그인한 사용자는 앱 화면으로 바로 보낸다.
 - 앱마다 바뀌는 값은 로고, 이름(노란색으로 강조할 부분 포함), 소개 한 줄뿐이다. 나머지 구성은 모든 앱이 같아야 한다. 다른 레몬 앱과 같은 계정이라는 사실을 화면 모양으로 알리기 위함이다.
-- Layout: 화면 높이의 가운데에 모든 요소를 가운데 정렬한다. 위에서부터 아래 순서로 둔다.
+- Layout: Notice Page처럼 남은 화면 높이의 가운데에 모든 요소를 가운데 정렬한다. 레이아웃에 `<main>`이 없는 앱은 `<main className="flex min-h-dvh flex-col">`로 감싼다. 위에서부터 아래 순서로 둔다.
   - 앱 로고 120px
   - 레이블: 레몬 로고 16px + "LEMON ACCOUNT", Section Label 스타일(Galmuri11 Bold 12px, letter-spacing 1.5px, `var(--color-primary)`), margin-top 32px. 통합 계정이라는 사실은 이 레이블로만 알린다.
   - 제목: Hero Heading(Galmuri11 Bold 44px, 모바일 32px), margin-top 12px. 강조 부분은 `var(--color-primary)`

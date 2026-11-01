@@ -5,6 +5,13 @@ const meta = {
   title: "Page/LoginPage",
   component: LoginPage,
   parameters: { layout: "fullscreen" },
+  decorators: [
+    (Story) => (
+      <main className="flex min-h-dvh flex-col">
+        <Story />
+      </main>
+    ),
+  ],
   args: {
     logoSrc: "/images/lemon-logo.webp",
     name: "Lemon",

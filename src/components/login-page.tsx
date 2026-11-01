@@ -24,7 +24,7 @@ function GoogleMark() {
   );
 }
 
-// 레몬 통합 계정(auth-server, Google 로그인)으로 들어가는 앱의 첫 화면.
+// 레몬 통합 계정(auth-server, Google 로그인)으로 들어가는 앱의 첫 화면. NoticePage처럼 부모의 남은 높이 가운데에 놓인다.
 // 버튼 색은 Google 로그인 버튼 가이드의 다크 테마 규격이라 토큰을 쓰지 않는다
 export function LoginPage({
   logoSrc,
@@ -40,7 +40,7 @@ export function LoginPage({
   loginHref: string;
 }) {
   return (
-    <main className="flex min-h-dvh flex-col items-center justify-center px-5 py-12 text-center sm:px-8">
+    <div className="mx-auto flex w-full flex-1 flex-col items-center justify-center px-5 py-12 text-center sm:px-8 sm:py-16">
       <img src={logoSrc} alt="" width={120} height={120} className="size-[120px] object-contain" />
       <p className="mt-8 inline-flex items-center gap-1.5 font-heading text-xs font-bold tracking-[1.5px] text-primary">
         <img src={LEMON_LOGO_DATA_URI} alt="" width={16} height={16} className="size-4 rounded-full" />
@@ -58,6 +58,6 @@ export function LoginPage({
         <GoogleMark />
         Google 계정으로 로그인
       </a>
-    </main>
+    </div>
   );
 }
