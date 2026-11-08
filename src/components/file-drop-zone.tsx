@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   File,
   FileArchive,
@@ -38,12 +38,18 @@ function fileTypeLabel(file: File): string {
 
 // 이미지면 썸네일, 아니면 파일 형식 아이콘을 보여 주는 44px 상자
 export function FileThumbnail({ file }: { file: File }) {
-  const thumbnailUrl = useMemo(() => (file.type.startsWith("image/") ? URL.createObjectURL(file) : null), [file]);
+  // 주소를 만드는 일과 거두는 일을 한 effect에 둔다. 만들기를 useMemo에 두면 StrictMode가 effect를 한 번 더 돌릴 때
+  // 거둔 주소를 그대로 써서 개발 모드에서 썸네일이 깨진다
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   useEffect(() => {
-    return () => {
-      if (thumbnailUrl) URL.revokeObjectURL(thumbnailUrl);
-    };
-  }, [thumbnailUrl]);
+    if (!file.type.startsWith("image/")) {
+      setThumbnailUrl(null);
+      return;
+    }
+    const url = URL.createObjectURL(file);
+    setThumbnailUrl(url);
+    return () => URL.revokeObjectURL(url);
+  }, [file]);
 
   return (
     <span className="flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-primary-dim text-primary">
